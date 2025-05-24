@@ -1,0 +1,21 @@
+<form id="form-mensaje" class="flex flex-col justify-center items-center gap-4 p-4 rounded-md">
+    <h2 class="text-lg">¿Quieres dejar un mensaje para Kimi?</h2>
+    <textarea id="inputMensaje" name="mensaje" class="w-[90%] max-h-40 outline-none p-2 border-2 rounded-md text-center field-sizing-content resize-none"></textarea>
+    <button type="submit" class="bg-pink-500 hover:bg-pink-400 text-white w-fit py-2 px-8 rounded-md">Enviar mensaje</button>
+</form>
+
+<script>
+    const form = document.getElementById('form-mensaje') as HTMLFormElement;
+    const inputMensaje = document.getElementById('inputMensaje') as HTMLTextAreaElement;
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const mensaje = inputMensaje.value;
+        /*
+            Hacer funciones de firebase para enviar la asistencia
+            1. Probar directamente en el frontend
+            2. Hacer un endpoint para probar?
+        */
+        console.log(`Mensaje: ${mensaje}`);
+    });
+</script>

@@ -1,0 +1,60 @@
+<form id="form-asistencia" class="flex flex-col justify-center items-center gap-4 p-4 rounded-md">
+    <h2 class="text-lg">Confirmar asistencia</h2>
+    <div>
+        <button type="button" id="btnMenos" class="bg-pink-500 hover:bg-pink-400 text-white size-10 rounded-md">-</button>
+        <input id="inputAsistencia" type="number" id="asistencia" name="asistencia" min="1" max="5" value="1" class="size-10 outline-none border-2 rounded-md text-center" />
+        <button type="button" id="btnMas" class="bg-pink-500 hover:bg-pink-400 text-white size-10 rounded-md">+</button>
+    </div>
+    <button type="submit" class="bg-pink-500 hover:bg-pink-400 text-white w-fit py-2 px-8 rounded-md">Enviar</button>
+</form>
+
+<script>
+    const form = document.getElementById('form-asistencia') as HTMLFormElement;
+    const btnMenos = document.getElementById('btnMenos') as HTMLButtonElement;
+    const btnMas = document.getElementById('btnMas') as HTMLButtonElement;
+    const inputAsistencia = document.getElementById('inputAsistencia') as HTMLInputElement;
+
+    const min = parseInt(inputAsistencia.min);
+    const max = parseInt(inputAsistencia.max);
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const asistencia = inputAsistencia.value;
+        /*
+            Hacer funciones de firebase para enviar la asistencia
+            1. Probar directamente en el frontend
+            2. Hacer un endpoint para probar?
+        */
+        console.log(`Asistencia: ${asistencia}`);
+    });
+
+    btnMenos.addEventListener('click', () => {
+        let value = parseInt(inputAsistencia.value);
+        if (value > min) {
+            value--;
+            inputAsistencia.value = value.toString();
+        }
+    });
+
+    btnMas.addEventListener('click', () => {
+        let value = parseInt(inputAsistencia.value);
+        if (value < max) {
+            value++;
+            inputAsistencia.value = value.toString();
+        }
+    });
+</script>
+
+<style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+</style>

@@ -1,0 +1,79 @@
+<h2 class="text-center text-lg mb-4">¿Cuanto tiempo falta?</h2>
+<div id="countdown" class="flex gap-4 justify-center items-center overflow-clip has-[.iniciado]:bg-pink-100 rounded-md">
+    <div class="flex flex-col justify-center items-center w-14 bg-pink-300 rounded-md">
+        <span class="text-2xl py-2">0</span>
+        <span class="w-full text-center rounded-b-md py-1 -bg-linear-60 from-pink-500 via-pink-400 to-pink-500">D</span>
+    </div>
+    <div class="flex flex-col justify-center items-center w-14 bg-pink-300 rounded-md">
+        <span class="text-2xl py-2">0</span>
+        <span class="bg-pink-400 w-full text-center rounded-b-md py-1 -bg-linear-60 from-pink-500 via-pink-400 to-pink-500">H</span>
+    </div>
+    <div class="flex flex-col justify-center items-center w-14 bg-pink-300 rounded-md">
+        <span class="text-2xl py-2">0</span>
+        <span class="bg-pink-400 w-full text-center rounded-b-md py-1 -bg-linear-60 from-pink-500 via-pink-400 to-pink-500">M</span>
+    </div>
+    <div class="flex flex-col justify-center items-center w-14 bg-pink-300 rounded-md">
+        <span class="text-2xl py-2">0</span>
+        <span class="bg-pink-400 w-full text-center rounded-b-md py-1 -bg-linear-60 from-pink-500 via-pink-400 to-pink-500">S</span>
+    </div>
+</div>
+
+<script>
+    const targetDate = new Date('2025-06-28T12:00:00').getTime();
+    const countdownElement = document.getElementById('countdown') as HTMLDivElement;
+
+    const intervalo = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        // Cuenta atrás terminada
+        if (distance < 0) {
+            countdownElement.innerHTML = `
+                <span class="iniciado text-pink-500 font-bold text-3xl my-10 whitespace-nowrap">¡Evento iniciado!</span>
+                <span class="iniciado text-pink-500 font-bold text-3xl my-10 whitespace-nowrap">¡Evento iniciado!</span>
+                <span class="iniciado text-pink-500 font-bold text-3xl my-10 whitespace-nowrap">¡Evento iniciado!</span>
+                <span class="iniciado text-pink-500 font-bold text-3xl my-10 whitespace-nowrap">¡Evento iniciado!</span>
+                <span class="iniciado text-pink-500 font-bold text-3xl my-10 whitespace-nowrap">¡Evento iniciado!</span>
+                <span class="iniciado text-pink-500 font-bold text-3xl my-10 whitespace-nowrap">¡Evento iniciado!</span>
+            `;
+            clearInterval(intervalo);
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        countdownElement.innerHTML = `
+            <div class="flex flex-col justify-center items-center w-14 bg-pink-300 rounded-md">
+                <span class="text-2xl py-2">${days}</span>
+                <span class="w-full text-center rounded-b-md py-1 -bg-linear-60 from-pink-500 via-pink-400 to-pink-500">D</span>
+            </div>
+            <div class="flex flex-col justify-center items-center w-14 bg-pink-300 rounded-md">
+                <span class="text-2xl py-2">${hours}</span>
+                <span class="bg-pink-400 w-full text-center rounded-b-md py-1 -bg-linear-60 from-pink-500 via-pink-400 to-pink-500">H</span>
+            </div>
+            <div class="flex flex-col justify-center items-center w-14 bg-pink-300 rounded-md">
+                <span class="text-2xl py-2">${minutes}</span>
+                <span class="bg-pink-400 w-full text-center rounded-b-md py-1 -bg-linear-60 from-pink-500 via-pink-400 to-pink-500">M</span>
+            </div>
+            <div class="flex flex-col justify-center items-center w-14 bg-pink-300 rounded-md">
+                <span class="text-2xl py-2">${seconds}</span>
+                <span class="bg-pink-400 w-full text-center rounded-b-md py-1 -bg-linear-60 from-pink-500 via-pink-400 to-pink-500">S</span>
+            </div>
+        `;
+    }, 1000);
+</script>
+
+<style is:global>
+    .iniciado {
+        animation: move 4s linear infinite;
+    }
+
+    @keyframes move {
+        100% {
+            transform: translateX(calc(-100% - 16px));
+        }
+    }
+</style>
