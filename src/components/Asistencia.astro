@@ -1,3 +1,9 @@
+---
+import Toast from "@/components/Toast.astro";
+---
+
+<Toast class="toast-asistencia" />
+
 <form id="form-asistencia" class="flex flex-col justify-center items-center gap-4 p-4 rounded-md">
     <h2 class="text-lg">Confirmar asistencia</h2>
     <div>
@@ -9,6 +15,8 @@
 </form>
 
 <script>
+    import { showToast } from "@/lib/toast";
+
     const form = document.getElementById('form-asistencia') as HTMLFormElement;
     const btnMenos = document.getElementById('btnMenos') as HTMLButtonElement;
     const btnMas = document.getElementById('btnMas') as HTMLButtonElement;
@@ -19,6 +27,16 @@
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
+
+        // Comprobar si ya se ha confirmado la asistencia
+        if(localStorage.getItem("asistencia") === "true"){
+            return showToast({
+                selector: ".toast-asistencia",
+                mensaje: "Ya has confirmado tu asistencia",
+                tipo: "warning",
+            });
+        }
+
         const asistencia = inputAsistencia.value;
         /*
             Hacer funciones de firebase para enviar la asistencia
@@ -26,6 +44,8 @@
             2. Hacer un endpoint para probar?
         */
         console.log(`Asistencia: ${asistencia}`);
+
+        localStorage.setItem("asistencia", "true");
     });
 
     btnMenos.addEventListener('click', () => {
