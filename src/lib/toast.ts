@@ -7,24 +7,24 @@ interface ShowToastProps {
     tipo?: ToastTypes;
 }
 
-let intervalos: any = {};
-let contadorZIndex = 100;
-
 export function showToast({ selector, mensaje, duracion = 3000, tipo="success"}: ShowToastProps) {
-    if(intervalos[selector]) return;
+    const toaster = document.querySelector(".toaster") as HTMLDivElement;
 
-    const toast = document.querySelector(selector) as HTMLDivElement;
-
-    if(toast){
-        toast.innerHTML = mensaje;
-        toast.classList.remove('cerrado');
-        toast.classList.add(`toast-${tipo}`);
-        toast.style.zIndex = `${contadorZIndex++}`;
-    
-        intervalos[selector] = setTimeout(() => {
-            toast.classList.add('cerrado');
-            toast.classList.remove(`toast-${tipo}`);
-            intervalos[selector] = null;
-        }, duracion);
+    if(!toaster){
+        return console.error("No se encontró el elemento con la clase 'toaster'. Asegúrate de que exista en el DOM.");
     }
+
+    const toastItem = document.createElement("div");
+    toastItem.className = `toast-item text-lg rounded-md px-8 py-2`;
+    toastItem.classList.add(`toast-${tipo}`);
+    toastItem.textContent = mensaje;
+    toaster.appendChild(toastItem);
+
+    // Cerrar el toast después de la duración especificada
+    setTimeout(() => {
+        toastItem.classList.add("cerrado");
+        toastItem.addEventListener("transitionend", () => {
+            toastItem.remove();
+        });
+    }, duracion);
 }
