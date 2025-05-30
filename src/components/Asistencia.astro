@@ -9,6 +9,7 @@
 </form>
 
 <script>
+    import { enviarAsistencia, obtenerAsistencia } from "@/firebase";
     import { showToast } from "@/lib/toast";
 
     const form = document.getElementById('form-asistencia') as HTMLFormElement;
@@ -19,7 +20,7 @@
     const min = parseInt(inputAsistencia.min);
     const max = parseInt(inputAsistencia.max);
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         // Comprobar si ya se ha confirmado la asistencia
@@ -32,16 +33,17 @@
         }
 
         const asistencia = inputAsistencia.value;
-        /*
+        /*TODO:
             Hacer funciones de firebase para enviar la asistencia
             1. Probar directamente en el frontend
             2. Hacer un endpoint para probar?
         */
+        await enviarAsistencia(asistencia);
         console.log(`Asistencia: ${asistencia}`);
 
         showToast({
             selector: ".toast-asistencia",
-            mensaje: "Asistencia confirmada",
+            mensaje: "Gracias por confirmar tu asistencia",
             tipo: "success",
         });
 
@@ -69,12 +71,12 @@
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+        -webkit-appearance: none;
+        margin: 0;
     }
 
     /* Firefox */
     input[type=number] {
-    -moz-appearance: textfield;
+        -moz-appearance: textfield;
     }
 </style>
