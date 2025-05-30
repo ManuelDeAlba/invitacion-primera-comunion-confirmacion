@@ -12,11 +12,14 @@
 </form>
 
 <script>
+import { enviarMensaje } from "@/firebase";
+import { showToast } from "@/lib/toast";
+
     const form = document.getElementById('form-mensaje') as HTMLFormElement;
     const inputNombre = document.getElementById('inputNombre') as HTMLInputElement;
     const inputMensaje = document.getElementById('inputMensaje') as HTMLTextAreaElement;
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const nombre = inputNombre.value.trim();
         const mensaje = inputMensaje.value.trim();
@@ -25,6 +28,22 @@
             1. Probar directamente en el frontend
             2. Hacer un endpoint para probar?
         */
-        console.log(`Nombre: ${nombre}\nMensaje: ${mensaje}`);
+        try{
+            await enviarMensaje({
+                nombre: nombre,
+                mensaje: mensaje,
+            });
+            console.log(`Nombre: ${nombre}\nMensaje: ${mensaje}`);
+            
+            showToast({
+                mensaje: "Gracias por enviar tu mensaje",
+                tipo: "success",
+            });
+        } catch(error){
+            showToast({
+                mensaje: "Error al enviar el mensaje, por favor intenta de nuevo más tarde.",
+                tipo: "error",
+            });
+        }
     });
 </script>

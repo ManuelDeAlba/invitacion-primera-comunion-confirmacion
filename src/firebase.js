@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { collection, doc, getAggregateFromServer, getFirestore, setDoc, sum } from "firebase/firestore";
+import { collection, doc, getAggregateFromServer, getDocs, getFirestore, setDoc, sum } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -20,9 +20,14 @@ export async function enviarAsistencia(asistencias){
     const id = Date.now() + crypto.randomUUID();
     const documento = doc(db, "asistencias", id);
 
-    await setDoc(documento, {
+    const docObj = {
+        id: id,
         invitados: parseInt(asistencias)
-    })
+    }
+
+    await setDoc(documento, docObj);
+
+    return docObj;
 }
 
 export async function obtenerAsistencia(){
@@ -33,4 +38,29 @@ export async function obtenerAsistencia(){
     });
 
     return snap.data().totalInvitados;
+}
+
+export async function enviarMensaje({ nombre, mensaje }){
+    const id = Date.now() + crypto.randomUUID();
+    const documento = doc(db, "mensajes", id);
+
+    const docObj = {
+        id: id,
+        fecha: Date.now(),
+        nombre: nombre,
+        mensaje: mensaje
+    }
+
+    await setDoc(documento, docObj);
+
+    return docObj;
+}
+
+export async function obtenerMensajes(){
+    const coleccion = collection(db, "mensajes");
+
+    const snapshot = await getDocs(coleccion);
+    const mensajes = snapshot.docs.map(doc => doc.data());
+
+    return mensajes;
 }

@@ -37,15 +37,22 @@
             1. Probar directamente en el frontend
             2. Hacer un endpoint para probar?
         */
-        await enviarAsistencia(asistencia);
-        console.log(`Asistencia: ${asistencia}`);
+        try{
+            await enviarAsistencia(asistencia);
+            console.log(`Asistencia: ${asistencia}`);
 
-        showToast({
-            mensaje: "Gracias por confirmar tu asistencia",
-            tipo: "success",
-        });
+            showToast({
+                mensaje: "Gracias por confirmar tu asistencia",
+                tipo: "success",
+            });
 
-        localStorage.setItem("asistencia", "true");
+            localStorage.setItem("asistencia", "true");
+        } catch(error){
+            showToast({
+                mensaje: "Error al enviar la asistencia, por favor intenta de nuevo más tarde.",
+                tipo: "error",
+            });
+        }
     });
 
     btnMenos.addEventListener('click', () => {
