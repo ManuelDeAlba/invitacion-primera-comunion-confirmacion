@@ -6,12 +6,17 @@ import Ubicaciones from '@/components/Ubicaciones.astro';
 import TiempoRestante from '@/components/TiempoRestante.astro';
 import Asistencia from '@/components/Asistencia.astro';
 import Mensaje from '@/components/Mensaje.astro';
+import Toaster from "@/components/Toaster.astro";
+
+import Cross from "@/icons/Cross.astro";
 ---
 
 <Layout>
+	<Toaster />
+	
 	<main class="w-[90%] max-w-5xl mx-auto py-6">
-		<h1 class="flex flex-col gap-6 text-center text-2xl">
-			<span>Primera comunión y confirmación de </span>
+		<h1 class="flex flex-col gap-6 text-center text-2xl">			
+			<span class="flex gap-4 justify-center"><Cross />Primera comunión y confirmación de <Cross /></span>
 			<span class="text-pink-500 -rotate-3 font-bold text-4xl">Kimberly Cataleya Martínez Robles</span>
 		</h1>
 
