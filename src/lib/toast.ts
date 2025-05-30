@@ -1,13 +1,12 @@
 type ToastTypes = 'success' | 'error' | 'info' | 'warning';
 
 interface ShowToastProps {
-    selector: string;
     mensaje: string;
     duracion?: number;
     tipo?: ToastTypes;
 }
 
-export function showToast({ selector, mensaje, duracion = 3000, tipo="success"}: ShowToastProps) {
+export function showToast({ mensaje, duracion = 3000, tipo="success"}: ShowToastProps) {
     const toaster = document.querySelector(".toaster") as HTMLDivElement;
 
     if(!toaster){

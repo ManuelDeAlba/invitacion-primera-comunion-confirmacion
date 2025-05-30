@@ -26,14 +26,13 @@
         // Comprobar si ya se ha confirmado la asistencia
         if(localStorage.getItem("asistencia") === "true"){
             return showToast({
-                selector: ".toast-asistencia",
                 mensaje: "Ya has confirmado tu asistencia",
                 tipo: "warning",
             });
         }
 
         const asistencia = inputAsistencia.value;
-        /*TODO:
+        /* TODO:
             Hacer funciones de firebase para enviar la asistencia
             1. Probar directamente en el frontend
             2. Hacer un endpoint para probar?
@@ -42,7 +41,6 @@
         console.log(`Asistencia: ${asistencia}`);
 
         showToast({
-            selector: ".toast-asistencia",
             mensaje: "Gracias por confirmar tu asistencia",
             tipo: "success",
         });
