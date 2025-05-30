@@ -1,4 +1,5 @@
 // Import the functions you need from the SDKs you need
+import bcrypt from "bcryptjs";
 import { initializeApp } from "firebase/app";
 import { collection, doc, getAggregateFromServer, getDocs, getFirestore, setDoc, sum } from "firebase/firestore";
 
@@ -63,4 +64,49 @@ export async function obtenerMensajes(){
     const mensajes = snapshot.docs.map(doc => doc.data());
 
     return mensajes;
+}
+
+export async function iniciarSesion(contrasena){
+    const coleccion = collection(db, "contrasenas");
+
+    const snapshot = await getDocs(coleccion);
+    const contrasenas = snapshot.docs.map(doc => doc.data());
+
+    const correcta = contrasenas.some(({ contrasena: contrasenaGuardada }) => {
+        return bcrypt.compareSync(contrasena, contrasenaGuardada);
+    })
+
+    return correcta;
+}
+
+export async function crearToken(){
+    const token = crypto.randomUUID();
+    const documento = doc(db, "tokens", token);
+
+    const docObj = {
+        token: token,
+        fecha: Date.now()
+    }
+
+    await setDoc(documento, docObj);
+
+    return token;
+}
+
+export async function verificarToken(token){
+    const coleccion = collection(db, "tokens");
+
+    const snapshot = await getDocs(coleccion);
+    const tokens = snapshot.docs.map(doc => doc.data());
+
+    const tokensValidos = tokens.filter(tokenGuardado => {
+        return tokenGuardado.token == token;
+    })
+    console.log({tokensValidos});
+
+    const valido = tokens.some(({ token: tokenGuardado }) => {
+        return tokenGuardado === token;
+    });
+
+    return valido;
 }

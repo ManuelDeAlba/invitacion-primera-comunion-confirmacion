@@ -1,0 +1,47 @@
+---
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout>
+    <main class="flex items-center justify-center h-screen bg-slate-100">
+        <form id="form" class="flex flex-col gap-4 w-[90%] max-w-xl mx-auto bg-white shadow-xl p-8 rounded-md">
+            <h1 class="text-xl font-bold text-slate-800 text-center">Iniciar sesión</h1>
+            <p class="text-slate-600">Inicia sesión para ver las respuestas de los invitados</p>
+            <div class="w-full">
+                <label for="inputContrasena" class="block mb-2">Contraseña:</label>
+                <input id="inputContrasena" type="password" class="w-full p-2 border-2 rounded-md" />
+            </div>
+            <button class="bg-sky-500 hover:bg-sky-600 text-white p-2 rounded-md transition-colors">
+                Iniciar sesión
+            </button>
+        </form>
+    </main>
+</Layout>
+
+<script>
+    import { showToast } from "@/lib/toast";
+
+    const form = document.querySelector('#form') as HTMLFormElement;
+    const inputContrasena = document.querySelector('#inputContrasena') as HTMLInputElement;
+
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        
+        const res = await fetch("http://localhost:4321/api/inicio-sesion", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                contrasena: inputContrasena.value
+            })
+        })
+        if(res.redirected) window.location.href = res.url;
+        if(res.status === 401) {
+            showToast({
+                mensaje: "Contraseña incorrecta",
+                tipo: "error"
+            });
+        }
+    });
+</script>
