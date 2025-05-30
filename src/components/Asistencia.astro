@@ -45,6 +45,12 @@ import Toast from "@/components/Toast.astro";
         */
         console.log(`Asistencia: ${asistencia}`);
 
+        showToast({
+            selector: ".toast-asistencia",
+            mensaje: "Asistencia confirmada",
+            tipo: "success",
+        });
+
         localStorage.setItem("asistencia", "true");
     });
 
