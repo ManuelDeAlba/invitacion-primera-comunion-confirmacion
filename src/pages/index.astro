@@ -7,19 +7,25 @@ import Asistencia from '@/components/Asistencia.astro';
 import Mensaje from '@/components/Mensaje.astro';
 
 import Cross from "@/icons/Cross.astro";
+import DecoracionHorizontal from '@/icons/DecoracionHorizontal.astro';
 
 export const prerender = true;
 ---
 
 <Layout>
-	<main class="w-[90%] max-w-5xl mx-auto py-6 space-y-10">
+	<header class="w-[90%] max-w-5xl mx-auto pt-10">
 		<h1 class="flex flex-col gap-6 text-center text-2xl">			
-			<span class="flex gap-4 justify-center"><Cross />Primera comunión y confirmación de <Cross /></span>
-			<span class="text-pink-500 font-bold text-4xl">Kimberly Cataleya Martínez Robles</span>
+			<span class="flex gap-4 justify-center"><Cross />Te invito a mi primera comunión y confirmación <Cross /></span>
 		</h1>
-
-		<img src="/cruz.webp" alt="" class="mx-auto my-16" />
-
+		
+		<div class="flex flex-col justify-center items-center gap-4 max-w-5xl mx-auto my-16 overflow-clip">
+			<DecoracionHorizontal class="text-amber-500" />
+			<span class="text-amber-500 font-bold text-4xl text-center">Kimberly Cataleya Martínez Robles</span>
+			<img src="/imagen.webp" alt="Imagen de Kimberly" class="max-h-[400px] rounded-md" />
+			<DecoracionHorizontal class="text-amber-500 rotate-180" />
+		</div>
+	</header>
+	<main class="w-[90%] max-w-5xl mx-auto py-6 space-y-10">
 		<!-- TODO -->
 		<Horarios />
 

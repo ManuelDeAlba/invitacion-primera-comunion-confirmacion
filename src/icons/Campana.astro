@@ -1,5 +1,5 @@
 ---
-const { class: className = '' } = Astro.props;
+const { class: className = "", ...props } = Astro.props;
 ---
 
 <svg
@@ -16,7 +16,8 @@ const { class: className = '' } = Astro.props;
         "size-8 text-amber-400",
         className
     ]}
-    ><path
-        d="M11 2a2 2 0 0 0-2 2v5H4a2 2 0 0 0-2 2v2c0 1.1.9 2 2 2h5v5c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2v-5h5a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-5V4a2 2 0 0 0-2-2h-2z"
-    ></path></svg
+    {...props}
+    ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+        d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6"
+    ></path><path d="M9 17v1a3 3 0 0 0 6 0v-1"></path></svg
 >

@@ -16,7 +16,7 @@ const dateFormatter = new Intl.DateTimeFormat("es-MX", {
     <main class="bg-slate-100 min-h-screen p-8 space-y-8">
         <div class="w-[90%] max-w-3xl bg-white mx-auto flex flex-col justify-center items-center gap-4 p-8 rounded-md">
             <h2 class="text-lg font-bold text-black/80">Asistencias totales:</h2>
-            <span class="text-5xl font-bold text-pink-600" id="span-asistencias">0</span>
+            <span class="text-5xl font-bold text-amber-600" id="span-asistencias">0</span>
         </div>
 
         <div class="w-[90%] max-w-3xl bg-white mx-auto flex flex-col justify-center gap-4 p-8 rounded-md">
@@ -24,7 +24,7 @@ const dateFormatter = new Intl.DateTimeFormat("es-MX", {
             {
                 mensajes.length > 0 ? (
                     mensajes.map(mensaje => (
-                        <div class="w-full space-y-2 p-4 bg-pink-50 rounded-md shadow-md">
+                        <div class="w-full space-y-2 p-4 bg-amber-50 rounded-md shadow-md">
                             <p class="font-bold text-black/80">{mensaje.nombre}</p>
                             <p class="text-gray-500 text-sm text-right">{dateFormatter.format(new Date(mensaje.fecha))}</p>
                             <p>{mensaje.mensaje}</p>
