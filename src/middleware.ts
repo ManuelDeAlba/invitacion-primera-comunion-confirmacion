@@ -4,6 +4,20 @@ import { verificarToken } from "@/lib/auth-token";
 export const onRequest = defineMiddleware(async (context, next) => {
     const url = new URL(context.request.url);
 
+    // If the user is already authenticated, redirect to the dashboard (/respuestas)
+    if(url.pathname == "/login"){
+        const token = context.cookies.get("auth-token");
+
+        if (token) {
+            const valido = verificarToken(token.value);
+            if (valido) {
+                return context.redirect("/respuestas");
+            }
+        }
+
+        return next();
+    }
+
     if (url.pathname.startsWith("/respuestas")) {
         const token = context.cookies.get("auth-token");
 
