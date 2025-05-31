@@ -1,19 +1,19 @@
 <h2 class="text-center text-lg mb-4">¿Cuanto tiempo falta?</h2>
-<div id="countdown" class="flex gap-4 justify-center items-center overflow-clip has-[.iniciado]:bg-pink-100 rounded-md">
-    <div class="flex flex-col justify-center items-center w-14 bg-pink-300 rounded-md">
-        <span id="temporizadorDias" class="text-2xl py-2">0</span>
+<div id="countdown" class="max-w-fit mx-auto grid grid-cols-1 place-items-center 2xs:grid-cols-2 xs:grid-cols-4 gap-4 overflow-clip has-[.iniciado]:bg-pink-100 rounded-md">
+    <div class="grid grid-rows-[1fr_auto] size-25 bg-pink-300 rounded-md">
+        <span id="temporizadorDias" class="flex font-bold text-black/80 justify-center items-center text-3xl py-2">0</span>
         <span style="--delay: 0s;" class="indicador w-full text-center rounded-b-md py-1 -bg-linear-60 from-pink-500 via-pink-400 to-pink-500">D</span>
     </div>
-    <div class="flex flex-col justify-center items-center w-14 bg-pink-300 rounded-md">
-        <span id="temporizadorHoras" class="text-2xl py-2">0</span>
+    <div class="grid grid-rows-[1fr_auto] size-25 bg-pink-300 rounded-md">
+        <span id="temporizadorHoras" class="flex font-bold text-black/80 justify-center items-center text-3xl py-2">0</span>
         <span style="--delay: 1s;" class="indicador w-full text-center rounded-b-md py-1 -bg-linear-60 from-pink-500 via-pink-400 to-pink-500">H</span>
     </div>
-    <div class="flex flex-col justify-center items-center w-14 bg-pink-300 rounded-md">
-        <span id="temporizadorMinutos" class="text-2xl py-2">0</span>
+    <div class="grid grid-rows-[1fr_auto] size-25 bg-pink-300 rounded-md">
+        <span id="temporizadorMinutos" class="flex font-bold text-black/80 justify-center items-center text-3xl py-2">0</span>
         <span style="--delay: 2s;" class="indicador w-full text-center rounded-b-md py-1 -bg-linear-60 from-pink-500 via-pink-400 to-pink-500">M</span>
     </div>
-    <div class="flex flex-col justify-center items-center w-14 bg-pink-300 rounded-md">
-        <span id="temporizadorSegundos" class="text-2xl py-2">0</span>
+    <div class="grid grid-rows-[1fr_auto] size-25 bg-pink-300 rounded-md">
+        <span id="temporizadorSegundos" class="flex font-bold text-black/80 justify-center items-center text-3xl py-2">0</span>
         <span style="--delay: 3s;" class="indicador w-full text-center rounded-b-md py-1 -bg-linear-60 from-pink-500 via-pink-400 to-pink-500">S</span>
     </div>
 </div>
