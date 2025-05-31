@@ -28,7 +28,7 @@ export const prerender = true;
     form.addEventListener('submit', async e => {
         e.preventDefault();
         
-        const res = await fetch("http://localhost:4321/api/inicio-sesion", {
+        const res = await fetch("/api/inicio-sesion", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
