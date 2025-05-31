@@ -1,11 +1,11 @@
 import { defineMiddleware } from "astro:middleware";
-import { verificarToken } from "./firebase";
+import { verificarToken } from "@/lib/auth-token";
 
 export const onRequest = defineMiddleware(async (context, next) => {
     const url = new URL(context.request.url);
 
     if (url.pathname.startsWith("/respuestas")) {
-        const token = context.cookies.get("token");
+        const token = context.cookies.get("auth-token");
 
         // Verify if there's a token in the cookies
         if (!token) {
@@ -14,7 +14,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
         }
 
         // If the token exists, verify in the database
-        const valido = await verificarToken(token.value);
+        const valido = verificarToken(token.value);
         
         if (!valido) {
             // If the token is invalid, redirect to the login page

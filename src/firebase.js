@@ -66,7 +66,7 @@ export async function obtenerMensajes(){
     return mensajes;
 }
 
-export async function iniciarSesion(contrasena){
+export async function verificarContrasena(contrasena){
     const coleccion = collection(db, "contrasenas");
 
     const snapshot = await getDocs(coleccion);
@@ -77,36 +77,4 @@ export async function iniciarSesion(contrasena){
     })
 
     return correcta;
-}
-
-export async function crearToken(){
-    const token = crypto.randomUUID();
-    const documento = doc(db, "tokens", token);
-
-    const docObj = {
-        token: token,
-        fecha: Date.now()
-    }
-
-    await setDoc(documento, docObj);
-
-    return token;
-}
-
-export async function verificarToken(token){
-    const coleccion = collection(db, "tokens");
-
-    const snapshot = await getDocs(coleccion);
-    const tokens = snapshot.docs.map(doc => doc.data());
-
-    const tokensValidos = tokens.filter(tokenGuardado => {
-        return tokenGuardado.token == token;
-    })
-    console.log({tokensValidos});
-
-    const valido = tokens.some(({ token: tokenGuardado }) => {
-        return tokenGuardado === token;
-    });
-
-    return valido;
 }

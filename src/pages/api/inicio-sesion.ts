@@ -1,4 +1,5 @@
-import { crearToken, iniciarSesion } from "@/firebase";
+import { verificarContrasena } from "@/firebase";
+import { crearToken } from "@/lib/auth-token";
 import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ params, request, cookies, redirect }) => {
@@ -10,7 +11,7 @@ export const POST: APIRoute = async ({ params, request, cookies, redirect }) => 
         });
     }
 
-    const correcta = await iniciarSesion(contrasena);
+    const correcta = await verificarContrasena(contrasena);
 
     if(!correcta) {
         return new Response(JSON.stringify({ error: "Contraseña incorrecta" }), {
@@ -18,13 +19,14 @@ export const POST: APIRoute = async ({ params, request, cookies, redirect }) => 
         });
     }
 
-    const token = await crearToken();
+    const token = crearToken();
 
-    cookies.set("token", token, {
+    cookies.set("auth-token", token, {
         httpOnly: true,
         sameSite: "strict",
         secure: true,
-        path: "/"
+        path: "/",
+        maxAge: 24 * 60 * 60, // 1 day
     });
 
     // Redirect to home
