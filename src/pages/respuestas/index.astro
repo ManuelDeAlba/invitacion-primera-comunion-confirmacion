@@ -1,7 +1,56 @@
 ---
-import Layout from "@/layouts/Layout.astro"
+import Layout from "@/layouts/Layout.astro";
+
+import { obtenerAsistencia, obtenerMensajes } from "@/firebase";
+
+const totalAsistencias = await obtenerAsistencia();
+const mensajes = await obtenerMensajes();
+
+const dateFormatter = new Intl.DateTimeFormat("es-MX", {
+    dateStyle: "medium",
+    timeStyle: "short",
+});
 ---
 
 <Layout>
-    <h1>Respuestas</h1>
+    <main class="bg-slate-100 min-h-screen p-8 space-y-8">
+        <div class="w-[90%] max-w-3xl bg-white mx-auto flex flex-col justify-center items-center gap-4 p-8 rounded-md">
+            <h2 class="text-lg font-bold text-black/80">Asistencias totales:</h2>
+            <span class="text-5xl font-bold text-pink-600" id="span-asistencias">0</span>
+        </div>
+
+        <div class="w-[90%] max-w-3xl bg-white mx-auto flex flex-col justify-center gap-4 p-8 rounded-md">
+            <h2 class="text-lg font-bold text-black/80">Mensajes:</h2>
+            {
+                mensajes.length > 0 ? (
+                    mensajes.map(mensaje => (
+                        <div class="w-full space-y-2 p-4 bg-pink-50 rounded-md shadow-md">
+                            <p class="font-bold text-black/80">{mensaje.nombre}</p>
+                            <p class="text-gray-500 text-sm text-right">{dateFormatter.format(new Date(mensaje.fecha))}</p>
+                            <p>{mensaje.mensaje}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p class="text-gray-500">No hay mensajes aún.</p>
+                )
+            }
+        </div>
+    </main>
 </Layout>
+
+<script define:vars={{ totalAsistencias }}>
+    const spanAsistencias = document.getElementById('span-asistencias');
+
+    let contador = 0;
+    let i = 0;
+    
+    let intervalo = setInterval(() => {
+        if(contador > totalAsistencias) {
+            contador = totalAsistencias;
+            clearInterval(intervalo);
+            return;
+        }
+        spanAsistencias.textContent = contador.toString();
+        contador++;
+    }, 1000 / totalAsistencias)
+</script>
