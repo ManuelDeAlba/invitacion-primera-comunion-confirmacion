@@ -57,6 +57,8 @@ import { showToast } from "@/lib/toast";
                 mensaje: "Gracias por enviar tu mensaje",
                 tipo: "success",
             });
+
+            form.reset();
         } catch(error){
             showToast({
                 mensaje: "Error al enviar el mensaje, por favor intenta de nuevo más tarde.",

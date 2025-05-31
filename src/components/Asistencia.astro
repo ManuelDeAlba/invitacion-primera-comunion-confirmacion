@@ -13,25 +13,41 @@ import Suma from "@/icons/Suma.astro";
     <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white py-2 px-8 rounded-md">Enviar</button>
 </form>
 
+<div class="mensaje-gracias hidden flex-col gap-2 justify-center items-center bg-amber-100 p-8 rounded-md shadow-md">
+    <p class="text-3xl text-amber-600 font-bold">¡Gracias por confirmar tu asistencia!</p>
+    <p class="text-lg text-gray-500">¡Nos vemos pronto!</p>
+</div>
+
 <script>
-    import { enviarAsistencia, obtenerAsistencia } from "@/firebase";
+    import { enviarAsistencia } from "@/firebase";
     import { showToast } from "@/lib/toast";
 
     const form = document.getElementById('form-asistencia') as HTMLFormElement;
     const btnMenos = document.getElementById('btnMenos') as HTMLButtonElement;
     const btnMas = document.getElementById('btnMas') as HTMLButtonElement;
     const inputAsistencia = document.getElementById('inputAsistencia') as HTMLInputElement;
+    const mensajeGracias = document.querySelector('.mensaje-gracias') as HTMLDivElement;
 
     const min = parseInt(inputAsistencia.min);
     const max = parseInt(inputAsistencia.max);
+
+    function mostrarMensajeGracias() {
+        if (localStorage.getItem("asistencia") === "true") {
+            // Si ya se ha confirmado la asistencia, mostrar mensaje de agradecimiento
+            mensajeGracias.classList.remove('hidden');
+            mensajeGracias.classList.add('flex');
+            form.classList.add('hidden');
+        }
+    }
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         // Comprobar si ya se ha confirmado la asistencia
         if(localStorage.getItem("asistencia") === "true"){
+            form.reset();
             return showToast({
-                mensaje: "Ya has confirmado tu asistencia",
+                mensaje: "Gracias por acompañarme, ya has confirmado tu asistencia.",
                 tipo: "warning",
             });
         }
@@ -51,7 +67,9 @@ import Suma from "@/icons/Suma.astro";
                 tipo: "success",
             });
 
+            form.reset();
             localStorage.setItem("asistencia", "true");
+            mostrarMensajeGracias();
         } catch(error){
             showToast({
                 mensaje: "Error al enviar la asistencia, por favor intenta de nuevo más tarde.",
@@ -74,6 +92,10 @@ import Suma from "@/icons/Suma.astro";
             value++;
             inputAsistencia.value = value.toString();
         }
+    });
+
+    window.addEventListener('load', () => {
+        mostrarMensajeGracias();
     });
 </script>
 
