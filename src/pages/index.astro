@@ -7,6 +7,8 @@ import Asistencia from '@/components/Asistencia.astro';
 import Mensaje from '@/components/Mensaje.astro';
 
 import Cross from "@/icons/Cross.astro";
+
+export const prerender = true;
 ---
 
 <Layout>
@@ -21,7 +23,6 @@ import Cross from "@/icons/Cross.astro";
 		<!-- TODO -->
 		<Horarios />
 
-		<!-- TODO -->
 		<Ubicaciones />
 
 		<TiempoRestante />
