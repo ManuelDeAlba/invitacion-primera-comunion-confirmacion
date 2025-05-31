@@ -1,5 +1,8 @@
 ---
-import Layout from "@/layouts/Layout.astro"
+import Layout from "@/layouts/Layout.astro";
+
+import Globo from "@/icons/Globo.astro";
+import Iglesia from "@/icons/Iglesia.astro";
 ---
 
 <Layout>
@@ -7,12 +10,20 @@ import Layout from "@/layouts/Layout.astro"
         <div class="size-full flex items-center justify-center">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d912.3464187786234!2d-103.3434396097038!3d20.66681822620184!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428b1f63bf0f007%3A0xcd689c5ab08bf975!2sTemplo%20de%20San%20Sebasti%C3%A1n%20de%20Analco!5e1!3m2!1ses-419!2smx!4v1748718521984!5m2!1ses-419!2smx" class="size-full min-h-[400px]" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
-        <div class="size-full flex flex-col items-center justify-center p-8 -order-1 sm:order-0">
-            <span class="text-2xl font-bold text-pink-500">Templo de San Sebastián de Analco</span>
-            <span>Cuauhtémoc #287, Analco, 44400 Guadalajara, Jal.</span>
+        <div class="size-full grid grid-rows-[auto_1fr] gap-2 place-items-center p-8 -order-1 sm:order-0">
+            <span class="flex gap-2 items-center text-3xl font-bold text-pink-500 uppercase mb-8">
+                <Iglesia />Misa<Iglesia />
+            </span>
+            <div class="flex flex-col gap-2 text-center">
+                <span class="text-2xl font-bold text-black/60">Templo de San Sebastián de Analco</span>
+                <span class="text-slate-600">Cuauhtémoc #287, Analco, 44400 Guadalajara, Jal.</span>
+            </div>
         </div>
-        <div class="size-full flex flex-col items-center justify-center p-8">
-            <span>C. Rita Pérez de Moreno 824, Santa María, 44719 Guadalajara, Jal.</span>
+        <div class="size-full grid grid-rows-[auto_1fr] gap-2 place-items-center p-8">
+            <span class="flex gap-2 items-center text-3xl font-bold text-pink-500 uppercase mb-8">
+                <Globo />Fiesta<Globo />
+            </span>
+            <span class="text-slate-600">C. Rita Pérez de Moreno 824, Santa María, 44719 Guadalajara, Jal.</span>
         </div>
         <div class="size-full flex items-center justify-center">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d279.15898303147577!2d-103.31298594037703!3d20.683803319471753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428b19d88bdc921%3A0x38a5b4a5c8283f35!2sC.%20Rita%20P%C3%A9rez%20de%20Moreno%20824%2C%20Santa%20Mar%C3%ADa%2C%2044719%20Guadalajara%2C%20Jal.!5e1!3m2!1ses-419!2smx!4v1748719317201!5m2!1ses-419!2smx" class="size-full min-h-[400px]" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
