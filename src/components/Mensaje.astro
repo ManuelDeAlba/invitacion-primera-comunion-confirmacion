@@ -1,15 +1,33 @@
-<form id="form-mensaje" class="flex flex-col justify-center items-center gap-4 p-8 rounded-md bg-white shadow-md">
-    <h2 class="text-lg">¿Quieres dejar un mensaje para Kimi?</h2>
-    <div class="w-[90%]">
-        <label for="inputMensaje">Nombre:</label>
-        <input type="text" id="inputNombre" name="nombre" class="w-full outline-none p-2 border-2 rounded-md" required />
+<div class="relative rounded-md">
+    <div class="triangulo w-full h-50 bg-amber-500 shadow-lg"></div>
+    <form id="form-mensaje" class="bg-amber-500">
+        <div class="form flex flex-col justify-center items-center gap-4 bg-white mx-8 p-8 rounded-md shadow-lg">
+            <h2 class="text-lg">¿Quieres dejarme un mensaje?</h2>
+            <div class="w-[90%]">
+                <label for="inputMensaje">Nombre:</label>
+                <input type="text" id="inputNombre" name="nombre" class="w-full outline-none p-2 border-2 rounded-md" required />
+            </div>
+            <div class="w-[90%]">
+                <label for="inputMensaje">Mensaje:</label>
+                <textarea id="inputMensaje" name="mensaje" class="w-full max-h-40 outline-none p-2 border-2 rounded-md field-sizing-content resize-none"></textarea>
+            </div>
+            <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white w-fit py-2 px-8 rounded-md">Enviar mensaje</button>
+        </div>
+    </form>
+    <div class="bg-amber-500 rounded-b-md">
+        <div class="triangulo w-full h-50 bg-amber-400/40 shadow-md drop-shadow-md"></div>
     </div>
-    <div class="w-[90%]">
-        <label for="inputMensaje">Mensaje:</label>
-        <textarea id="inputMensaje" name="mensaje" class="w-full max-h-40 outline-none p-2 border-2 rounded-md field-sizing-content resize-none"></textarea>
-    </div>
-    <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white w-fit py-2 px-8 rounded-md">Enviar mensaje</button>
-</form>
+</div>
+
+<style>
+    .form{
+        clip-path: polygon(0% 0%, 0% 70%, 50% 100%, 100% 70%, 100% 0%);
+    }
+    .triangulo{
+        clip-path: polygon(0% 100%, 0% 85%, 50% 0%, 100% 85%, 100% 100%);
+
+    }
+</style>
 
 <script>
 import { enviarMensaje } from "@/firebase";
