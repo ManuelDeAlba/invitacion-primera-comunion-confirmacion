@@ -6,19 +6,19 @@ import Campana from '@/icons/Campana.astro';
 
 <div id="countdown" class="max-w-fit mx-auto grid grid-cols-1 place-items-center 2xs:grid-cols-2 xs:grid-cols-4 gap-4 overflow-clip rounded-md">
     <div class="grid grid-rows-[1fr_auto] size-25 bg-amber-500 text-white rounded-md">
-        <span id="temporizadorDias" class="flex font-bold text-white/80 justify-center items-center text-3xl py-2">0</span>
+        <span id="temporizadorDias" class="flex font-bold text-white/90 justify-center items-center text-3xl py-2">0</span>
         <span style="--delay: 0s;" class="indicador w-full text-center rounded-b-md py-1 -bg-linear-60 from-amber-600 via-amber-500 to-amber-600">D</span>
     </div>
     <div class="grid grid-rows-[1fr_auto] size-25 bg-amber-500 text-white rounded-md">
-        <span id="temporizadorHoras" class="flex font-bold text-white/80 justify-center items-center text-3xl py-2">0</span>
+        <span id="temporizadorHoras" class="flex font-bold text-white/90 justify-center items-center text-3xl py-2">0</span>
         <span style="--delay: 1s;" class="indicador w-full text-center rounded-b-md py-1 -bg-linear-60 from-amber-600 via-amber-500 to-amber-600">H</span>
     </div>
     <div class="grid grid-rows-[1fr_auto] size-25 bg-amber-500 text-white rounded-md">
-        <span id="temporizadorMinutos" class="flex font-bold text-white/80 justify-center items-center text-3xl py-2">0</span>
+        <span id="temporizadorMinutos" class="flex font-bold text-white/90 justify-center items-center text-3xl py-2">0</span>
         <span style="--delay: 2s;" class="indicador w-full text-center rounded-b-md py-1 -bg-linear-60 from-amber-600 via-amber-500 to-amber-600">M</span>
     </div>
     <div class="grid grid-rows-[1fr_auto] size-25 bg-amber-500 text-white rounded-md">
-        <span id="temporizadorSegundos" class="flex font-bold text-white/80 justify-center items-center text-3xl py-2">0</span>
+        <span id="temporizadorSegundos" class="flex font-bold text-white/90 justify-center items-center text-3xl py-2">0</span>
         <span style="--delay: 3s;" class="indicador w-full text-center rounded-b-md py-1 -bg-linear-60 from-amber-600 via-amber-500 to-amber-600">S</span>
     </div>
 </div>
@@ -30,7 +30,7 @@ import Campana from '@/icons/Campana.astro';
 </div>
 
 <script>
-    const targetDate = new Date('2024-06-28T12:00:00').getTime();
+    const targetDate = new Date('2025-06-28T12:00:00').getTime();
     const countdownElement = document.getElementById('countdown') as HTMLDivElement;
     const iniciadoElement = document.getElementById('iniciado') as HTMLDivElement;
 
