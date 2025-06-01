@@ -19,7 +19,6 @@ import Suma from "@/icons/Suma.astro";
 </div>
 
 <script>
-    import { enviarAsistencia } from "@/firebase";
     import { showToast } from "@/lib/toast";
 
     const form = document.getElementById('form-asistencia') as HTMLFormElement;
@@ -53,14 +52,22 @@ import Suma from "@/icons/Suma.astro";
         }
 
         const asistencia = inputAsistencia.value;
-        /* TODO:
-            Hacer funciones de firebase para enviar la asistencia
-            1. Probar directamente en el frontend
-            2. Hacer un endpoint para probar?
-        */
+
+        // Enviar asistencia a la base de datos
         try{
-            await enviarAsistencia(asistencia);
-            console.log(`Asistencia: ${asistencia}`);
+            const res = await fetch("/api/asistencia", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ asistencia }),
+            });
+            if (!res.ok) {
+                return showToast({
+                    mensaje: "Error al enviar la asistencia, por favor intenta de nuevo más tarde.",
+                    tipo: "error",
+                });
+            }
 
             showToast({
                 mensaje: "Gracias por confirmar tu asistencia",

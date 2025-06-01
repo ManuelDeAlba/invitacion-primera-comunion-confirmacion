@@ -30,8 +30,7 @@
 </style>
 
 <script>
-import { enviarMensaje } from "@/firebase";
-import { showToast } from "@/lib/toast";
+    import { showToast } from "@/lib/toast";
 
     const form = document.getElementById('form-mensaje') as HTMLFormElement;
     const inputNombre = document.getElementById('inputNombre') as HTMLInputElement;
@@ -41,17 +40,22 @@ import { showToast } from "@/lib/toast";
         e.preventDefault();
         const nombre = inputNombre.value.trim();
         const mensaje = inputMensaje.value.trim();
-        /*
-            Hacer funciones de firebase para enviar la asistencia
-            1. Probar directamente en el frontend
-            2. Hacer un endpoint para probar?
-        */
+
+        // Enviar mensaje a la base de datos
         try{
-            await enviarMensaje({
-                nombre: nombre,
-                mensaje: mensaje,
+            const res = await fetch("/api/mensaje", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ nombre, mensaje }),
             });
-            console.log(`Nombre: ${nombre}\nMensaje: ${mensaje}`);
+            if (!res.ok) {
+                return showToast({
+                    mensaje: "Error al enviar el mensaje, por favor intenta de nuevo más tarde.",
+                    tipo: "error",
+                });
+            }
             
             showToast({
                 mensaje: "Gracias por enviar tu mensaje",
