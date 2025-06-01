@@ -15,11 +15,16 @@
         </div>
     </form>
     <div class="bg-amber-500 rounded-b-md">
-        <div class="triangulo w-full h-40 bg-amber-400/40 shadow-md drop-shadow-md"></div>
+        <div class="sombra">
+            <div class="triangulo w-full h-40 bg-amber-500 shadow-md drop-shadow-md"></div>
+        </div>
     </div>
 </div>
 
 <style>
+    .sombra{
+        filter: drop-shadow(0 -10px 10px rgba(0, 0, 0, 0.2));
+    }
     .form{
         clip-path: polygon(0% 0%, 0% 70%, 50% 100%, 100% 70%, 100% 0%);
     }
