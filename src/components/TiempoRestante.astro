@@ -23,10 +23,10 @@ import Campana from '@/icons/Campana.astro';
     </div>
 </div>
 
-<div id="iniciado" class="hidden justify-center items-center gap-4 bg-amber-100 p-5">
-    <Campana class="campana" />
-    <span class="iniciado text-amber-500 font-bold text-3xl my-10 whitespace-nowrap">¡Evento iniciado!</span>
-    <Campana class="campana" />
+<div id="iniciado" class="hidden flex-wrap justify-center items-center gap-4 bg-amber-100 px-5 py-10 text-center">
+    <Campana class="shrink-0 [animation:wiggle_0.3s_linear_infinite]" />
+    <span class="iniciado text-amber-500 font-bold text-3xl">¡Evento iniciado!</span>
+    <Campana class="shrink-0 [animation:wiggle_0.3s_linear_infinite]" />
 </div>
 
 <script>
@@ -88,21 +88,6 @@ import Campana from '@/icons/Campana.astro';
         }
         10%, 100%{
             left: calc(130%);
-        }
-    }
-
-    .campana{
-        animation: campana 0.5s ease-in-out infinite alternate;
-    }
-    @keyframes campana {
-        0% {
-            transform: rotate(-10deg);
-        }
-        50% {
-            transform: rotate(10deg);
-        }
-        100%{
-            transform: rotate(0deg);
         }
     }
 </style>
