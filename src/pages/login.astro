@@ -1,9 +1,16 @@
 ---
+import FlechaIzquierda from "@/icons/FlechaIzquierda.astro";
 import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout>
-    <main class="flex items-center justify-center min-h-screen bg-slate-100">
+    <main class="flex flex-col items-center justify-center min-h-screen bg-slate-100">
+        <div class="w-[90%] max-w-xl mx-auto mb-4">
+            <a href="/" class="text-amber-500 hover:text-amber-600 transition-colors flex items-center gap-2 hover:underline">
+                <FlechaIzquierda />
+                Inicio
+            </a>
+        </div>
         <form id="form" class="flex flex-col gap-4 w-[90%] max-w-xl mx-auto bg-white shadow-xl p-8 rounded-md">
             <h1 class="text-xl font-bold text-slate-800 text-center">Iniciar sesión</h1>
             <p class="text-slate-600">Inicia sesión para ver las respuestas de los invitados</p>
@@ -45,4 +52,8 @@ import Layout from "@/layouts/Layout.astro";
             form.reset();
         }
     });
+
+    window.addEventListener("load", () => {
+        inputContrasena.focus();
+    })
 </script>

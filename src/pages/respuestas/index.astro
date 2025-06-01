@@ -2,6 +2,8 @@
 import Layout from "@/layouts/Layout.astro";
 
 import { obtenerAsistencia, obtenerMensajes } from "@/firebase";
+import FlechaIzquierda from "@/icons/FlechaIzquierda.astro";
+import Salir from "@/icons/Salir.astro";
 
 const totalAsistencias = await obtenerAsistencia();
 const mensajes = await obtenerMensajes();
@@ -14,8 +16,13 @@ const dateFormatter = new Intl.DateTimeFormat("es-MX", {
 
 <Layout>
     <main class="bg-slate-100 min-h-screen py-8 space-y-8">
-        <div class="w-[90%] max-w-3xl mx-auto flex justify-end items-center">
-            <button id="btnSalir" class="bg-amber-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-amber-700 transition-colors">
+        <div class="w-[90%] max-w-3xl mx-auto flex justify-between items-center">
+            <a href="/" class="text-amber-500 hover:text-amber-600 transition-colors flex items-center gap-2 hover:underline">
+                <FlechaIzquierda />
+                Inicio
+            </a>
+            <button id="btnSalir" class="flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-md transition-colors">
+                <Salir />
                 Salir
             </button>
         </div>
