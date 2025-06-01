@@ -1,0 +1,27 @@
+---
+import DecoracionHorizontal from '@/icons/DecoracionHorizontal.astro';
+import Flor from '@/icons/Flor.astro';
+import Estrella from '@/icons/Estrella.astro';
+import Trigo from '@/icons/Trigo.astro';
+---
+
+<div class="flex flex-col justify-center items-center gap-4 max-w-5xl mx-auto my-16 overflow-clip">
+    <DecoracionHorizontal class="text-amber-500" />
+    <span class="w-[90%] max-w-5xl mx-auto text-amber-500 font-bold text-4xl text-center">Kimberly Cataleya Martínez Robles</span>
+    <div class="relative m-10">
+        <img src="/imagen.webp" alt="Imagen de Kimberly" class="max-h-[400px] rounded-md" />
+
+        <Flor class="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 size-20 text-red-300 drop-shadow-md [animation:spin_7s_linear_infinite]" />
+        <Estrella class="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 size-20 text-yellow-500 drop-shadow-md animate-wiggle" />
+
+        <Flor class="absolute top-1/2 right-0 translate-x-[150%] -translate-y-1/2 size-15 text-red-300 drop-shadow-md [animation:spin_7s_linear_infinite]" />
+        <Estrella class="absolute bottom-5/12 left-0 -translate-x-[200%] translate-y-1/2 size-14 text-yellow-500 drop-shadow-md animate-wiggle" />
+
+        <Flor class="absolute bottom-0 left-0 -translate-x-full -translate-y-1/2 size-12 text-red-300 drop-shadow-md [animation:spin_7s_linear_infinite]" />
+        <Estrella class="absolute top-0 right-0 translate-x-full translate-y-1/2 size-12 text-yellow-500 drop-shadow-md animate-wiggle" />
+
+        <Trigo class="absolute bottom-7/12 left-0 -translate-x-[170%] -translate-y-1/2 size-12 text-yellow-700 drop-shadow-md [animation:bounce_5s_linear_infinite]" />
+        <Trigo class="absolute top-7/12 right-0 translate-x-[150%] translate-y-1/2 size-12 text-yellow-700 drop-shadow-md [animation:bounce_5s_linear_infinite]" />
+    </div>
+    <DecoracionHorizontal class="text-amber-500 rotate-180" />
+</div>

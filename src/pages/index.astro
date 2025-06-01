@@ -1,38 +1,33 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import Horarios from '@/components/Horarios.astro';
+import FotoPresentacion from '@/components/FotoPresentacion.astro';
+import Fecha from '@/components/Fecha.astro';
 import Ubicaciones from '@/components/Ubicaciones.astro';
 import TiempoRestante from '@/components/TiempoRestante.astro';
 import Asistencia from '@/components/Asistencia.astro';
 import Mensaje from '@/components/Mensaje.astro';
 
 import Cross from "@/icons/Cross.astro";
-import DecoracionHorizontal from '@/icons/DecoracionHorizontal.astro';
 
 export const prerender = true;
 ---
 
 <Layout>
-	<header class="w-[90%] max-w-5xl mx-auto pt-10">
-		<h1 class="flex flex-col gap-6 text-center text-2xl">			
+	<header class="pt-10">
+		<h1 class="w-[90%] max-w-5xl mx-auto flex flex-col gap-6 text-center text-2xl">			
 			<span class="flex gap-4 justify-center items-center">
 				<Cross class="shrink-0" />
-				Te invito a mi primera comunión y confirmación
+				<span>Te invito a mi <span class="text-sky-500 font-bold">primera comunión</span> y <span class="text-amber-500 font-bold">confirmación</span></span>
 				<Cross class="shrink-0" />
 			</span>
 		</h1>
 		
-		<div class="flex flex-col justify-center items-center gap-4 max-w-5xl mx-auto my-16 overflow-clip">
-			<DecoracionHorizontal class="text-amber-500" />
-			<span class="text-amber-500 font-bold text-4xl text-center">Kimberly Cataleya Martínez Robles</span>
-			<img src="/imagen.webp" alt="Imagen de Kimberly" class="max-h-[400px] rounded-md" />
-			<DecoracionHorizontal class="text-amber-500 rotate-180" />
-		</div>
-	</header>
-	<main class="w-[90%] max-w-5xl mx-auto py-6 space-y-10">
-		<!-- TODO -->
-		<Horarios />
+		<FotoPresentacion />
 
+		<Fecha />
+	</header>
+
+	<main class="w-[90%] max-w-5xl mx-auto py-6 space-y-10">
 		<Ubicaciones />
 
 		<TiempoRestante />
