@@ -32,3 +32,14 @@ export const POST: APIRoute = async ({ params, request, cookies, redirect }) => 
     // Redirect to home
     return redirect("/respuestas");
 }
+
+export const DELETE: APIRoute = async ({ cookies, redirect }) => {
+    cookies.delete("auth-token", {
+        httpOnly: true,
+        secure: true,
+        path: "/"
+    });
+
+    // Redirect to home
+    return redirect("/");
+}

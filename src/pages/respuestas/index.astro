@@ -14,6 +14,10 @@ const dateFormatter = new Intl.DateTimeFormat("es-MX", {
 
 <Layout>
     <main class="bg-slate-100 min-h-screen p-8 space-y-8">
+        <button id="btnSalir" class="block ml-auto bg-amber-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-amber-700 transition-colors">
+            Salir
+        </button>
+
         <div class="w-[90%] max-w-3xl bg-white mx-auto flex flex-col justify-center items-center gap-4 p-8 rounded-md">
             <h2 class="text-lg font-bold text-black/80">Asistencias totales:</h2>
             <span class="text-5xl font-bold text-amber-600" id="span-asistencias">0</span>
@@ -40,9 +44,9 @@ const dateFormatter = new Intl.DateTimeFormat("es-MX", {
 
 <script define:vars={{ totalAsistencias }}>
     const spanAsistencias = document.getElementById('span-asistencias');
+    const btnSalir = document.getElementById('btnSalir');
 
     let contador = 0;
-    let i = 0;
     
     let intervalo = setInterval(() => {
         if(contador > totalAsistencias) {
@@ -53,4 +57,11 @@ const dateFormatter = new Intl.DateTimeFormat("es-MX", {
         spanAsistencias.textContent = contador.toString();
         contador++;
     }, 1000 / totalAsistencias)
+
+    btnSalir.addEventListener("click", async () => {
+        const res = await fetch("/api/inicio-sesion", {
+            method: "DELETE"
+        })
+        if(res.redirected) window.location.href = res.url;
+    })
 </script>
