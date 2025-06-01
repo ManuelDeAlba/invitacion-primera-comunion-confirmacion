@@ -4,7 +4,7 @@ import Campana from '@/icons/Campana.astro';
 
 <h2 class="text-center text-lg mb-4">¿Cuanto tiempo falta?</h2>
 
-<div id="countdown" class="max-w-fit mx-auto grid grid-cols-1 place-items-center 2xs:grid-cols-2 xs:grid-cols-4 gap-4 overflow-clip rounded-md">
+<section id="countdown" class="max-w-fit mx-auto grid grid-cols-1 place-items-center 2xs:grid-cols-2 xs:grid-cols-4 gap-4 overflow-clip rounded-md">
     <div class="grid grid-rows-[1fr_auto] size-25 bg-amber-500 text-white rounded-md">
         <span id="temporizadorDias" class="flex font-bold text-white/90 justify-center items-center text-3xl py-2">0</span>
         <span style="--delay: 0s;" class="indicador w-full text-center rounded-b-md py-1 -bg-linear-60 from-amber-600 via-amber-500 to-amber-600">D</span>
@@ -21,13 +21,13 @@ import Campana from '@/icons/Campana.astro';
         <span id="temporizadorSegundos" class="flex font-bold text-white/90 justify-center items-center text-3xl py-2">0</span>
         <span style="--delay: 3s;" class="indicador w-full text-center rounded-b-md py-1 -bg-linear-60 from-amber-600 via-amber-500 to-amber-600">S</span>
     </div>
-</div>
+</section>
 
-<div id="iniciado" class="hidden flex-wrap justify-center items-center gap-4 bg-amber-100 px-5 py-10 text-center">
+<section id="iniciado" class="hidden flex-wrap justify-center items-center gap-4 bg-amber-100 px-5 py-10 text-center">
     <Campana class="shrink-0 [animation:wiggle_0.3s_linear_infinite]" />
     <span class="text-amber-500 font-bold text-3xl">¡Hoy es el día!</span>
     <Campana class="shrink-0 [animation:wiggle_0.3s_linear_infinite]" />
-</div>
+</section>
 
 <script>
     const targetDate = new Date('2025-06-28T12:00:00').getTime();
