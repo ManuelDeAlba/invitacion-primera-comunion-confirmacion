@@ -25,16 +25,21 @@ import Campana from '@/icons/Campana.astro';
 
 <section id="iniciado" class="hidden flex-wrap justify-center items-center gap-4 bg-amber-100 px-5 py-10 text-center">
     <Campana class="shrink-0 [animation:wiggle_0.3s_linear_infinite]" />
-    <span class="text-amber-500 font-bold text-3xl">¡Hoy es el día!</span>
+    <span id="evento" class="text-amber-500 font-bold text-3xl">¡Hoy es el día!</span>
     <Campana class="shrink-0 [animation:wiggle_0.3s_linear_infinite]" />
 </section>
 
 <script>
-    const targetDate = new Date('2025-06-28T12:00:00').getTime();
+    const targetDate = new Date('2025-06-28T00:00:00').getTime();
+    const misaDate = new Date('2025-06-28T12:00:00').getTime();
+    const fiestaDate = new Date('2025-06-28T14:00:00').getTime();
+    const finDate = new Date('2025-06-28T23:59:59').getTime();
+
     const countdownElement = document.getElementById('countdown') as HTMLDivElement;
     const iniciadoElement = document.getElementById('iniciado') as HTMLDivElement;
+    const eventoElement = document.getElementById('evento') as HTMLSpanElement;
 
-    const intervalo = setInterval(() => {
+    function actualizarContador(){
         const now = new Date().getTime();
         const distance = targetDate - now;
 
@@ -44,6 +49,10 @@ import Campana from '@/icons/Campana.astro';
             iniciadoElement.classList.add('flex');
             countdownElement.classList.add('hidden');
             clearInterval(intervalo);
+
+            // Mostrar el evento actual
+            setInterval(actualizarEvento, 1000)
+
             return;
         }
 
@@ -61,7 +70,21 @@ import Campana from '@/icons/Campana.astro';
         temporizadorHoras.textContent = hours.toString().padStart(2, '0');
         temporizadorMinutos.textContent = minutes.toString().padStart(2, '0');
         temporizadorSegundos.textContent = seconds.toString().padStart(2, '0');
-    }, 1000);
+    }
+
+    function actualizarEvento(){
+        const timestamp = new Date().getTime();
+
+        if (timestamp >= misaDate && timestamp < fiestaDate) {
+            eventoElement.textContent = '¡Es hora de la misa!';
+        } else if (timestamp >= fiestaDate && timestamp <= finDate) {
+            eventoElement.textContent = '¡Es hora de la fiesta!';
+        } else if (timestamp > finDate) {
+            eventoElement.textContent = '¡Muchas gracias por acompañarme!';
+        }
+    }
+
+    const intervalo = setInterval(actualizarContador, 1000);
 </script>
 
 <style is:global>
