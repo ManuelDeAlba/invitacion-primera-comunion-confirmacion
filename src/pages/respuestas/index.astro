@@ -35,7 +35,10 @@ const dateFormatter = new Intl.DateTimeFormat("es-MX", {
         </div>
 
         <div class="w-[90%] max-w-3xl bg-white mx-auto flex flex-col justify-center gap-4 p-8 rounded-md">
-            <h2 class="text-lg font-bold text-black/80">Mensajes:</h2>
+            <h2 class="text-lg font-bold text-black/80">
+                Mensajes 
+                <span class="text-sm text-black/60">( {mensajes.length} )</span>:
+            </h2>
             {
                 mensajes.length > 0 ? (
                     mensajes.map(mensaje => (
