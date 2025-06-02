@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import bcrypt from "bcryptjs";
 import { initializeApp } from "firebase/app";
-import { collection, doc, getAggregateFromServer, getDocs, getFirestore, setDoc, sum } from "firebase/firestore";
+import { collection, count, doc, getAggregateFromServer, getDocs, getFirestore, setDoc, sum } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -39,6 +39,16 @@ export async function obtenerAsistencia(){
     });
 
     return snap.data().totalInvitados;
+}
+
+export async function obtenerEnviosAsistencia(){
+    const coleccion = collection(db, "asistencias");
+
+    const snap = await getAggregateFromServer(coleccion, {
+        envios: count('invitados')
+    });
+
+    return snap.data().envios;
 }
 
 export async function enviarMensaje({ nombre, mensaje }){
