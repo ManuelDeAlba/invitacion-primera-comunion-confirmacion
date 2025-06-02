@@ -1,7 +1,9 @@
 ---
 import "../styles/global.css";
 import '@fontsource/poppins';
+
 import Toaster from "@/components/Toaster.astro";
+import Creditos from "@/components/Creditos.astro";
 ---
 
 <!doctype html>
@@ -27,9 +29,10 @@ import Toaster from "@/components/Toaster.astro";
 		<meta property="twitter:description" content="Invitación digital de la primera comunión y confirmación de Kimberly Cataleya Martínez Robles" />
 		<meta property="twitter:image" content="https://invitacion-primera-comunion.netlify.app/favicon.png" />
 	</head>
-	<body>
+	<body class="bg-slate-100">
 		<Toaster />
 		<slot />
+		<Creditos />
 	</body>
 </html>
 
