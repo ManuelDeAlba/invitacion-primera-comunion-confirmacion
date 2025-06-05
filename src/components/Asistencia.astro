@@ -52,6 +52,11 @@ import Suma from "@/icons/Suma.astro";
         }
 
         const asistencia = inputAsistencia.value;
+        
+        // Optimistic UI update
+        // Mostrar el mensaje de agradecimiento inmediatamente para evitar que lo manden muchas veces
+        localStorage.setItem("asistencia", "true");
+        mostrarMensajeGracias();
 
         // Enviar asistencia a la base de datos
         try{
@@ -60,9 +65,12 @@ import Suma from "@/icons/Suma.astro";
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ asistencia }),
+                body: JSON.stringify({
+                    asistencia: Math.max(min, Math.min(parseInt(asistencia), max))
+                }),
             });
             if (!res.ok) {
+                localStorage.removeItem("asistencia");
                 return showToast({
                     mensaje: "Error al enviar la asistencia, por favor intenta de nuevo más tarde.",
                     tipo: "error",
@@ -75,9 +83,8 @@ import Suma from "@/icons/Suma.astro";
             });
 
             form.reset();
-            localStorage.setItem("asistencia", "true");
-            mostrarMensajeGracias();
         } catch(error){
+            localStorage.removeItem("asistencia");
             showToast({
                 mensaje: "Error al enviar la asistencia, por favor intenta de nuevo más tarde.",
                 tipo: "error",
