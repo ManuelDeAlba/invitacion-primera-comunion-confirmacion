@@ -23,6 +23,7 @@ export async function enviarAsistencia(asistencias){
 
     const docObj = {
         id: id,
+        fecha: Date.now(),
         invitados: parseInt(asistencias)
     }
 
