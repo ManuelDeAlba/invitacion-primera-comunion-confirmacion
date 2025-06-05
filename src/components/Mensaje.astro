@@ -9,9 +9,9 @@
             </div>
             <div class="w-[90%]">
                 <label for="inputMensaje">Mensaje:</label>
-                <textarea id="inputMensaje" name="mensaje" class="w-full max-h-40 outline-none p-2 border-2 rounded-md field-sizing-content resize-none"></textarea>
+                <textarea id="inputMensaje" name="mensaje" class="w-full max-h-40 outline-none p-2 border-2 rounded-md field-sizing-content resize-none" required></textarea>
             </div>
-            <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white w-fit py-2 px-8 rounded-md">Enviar mensaje</button>
+            <button id="btnEnviarMensaje" type="submit" class="bg-amber-500 hover:bg-amber-600 disabled:bg-amber-800 text-white w-fit py-2 px-8 rounded-md">Enviar mensaje</button>
         </div>
     </form>
     <div class="bg-amber-500 rounded-b-md overflow-hidden">
@@ -40,11 +40,24 @@
     const form = document.getElementById('form-mensaje') as HTMLFormElement;
     const inputNombre = document.getElementById('inputNombre') as HTMLInputElement;
     const inputMensaje = document.getElementById('inputMensaje') as HTMLTextAreaElement;
+    const btnEnviarMensaje = document.getElementById('btnEnviarMensaje') as HTMLButtonElement;
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const nombre = inputNombre.value.trim();
         const mensaje = inputMensaje.value.trim();
+
+        // Validar campos
+        if(!nombre || !mensaje) {
+            return showToast({
+                mensaje: "Por favor completa todos los campos del mensaje.",
+                tipo: "error",
+            });
+        }
+
+        // Deshabilitar botón mientras se envía el mensaje
+        btnEnviarMensaje.disabled = true;
+        btnEnviarMensaje.textContent = "Enviando...";
 
         // Enviar mensaje a la base de datos
         try{
@@ -56,23 +69,29 @@
                 body: JSON.stringify({ nombre, mensaje }),
             });
             if (!res.ok) {
+                // Si la respuesta no es exitosa, mostrar error
                 return showToast({
                     mensaje: "Error al enviar el mensaje, por favor intenta de nuevo más tarde.",
                     tipo: "error",
                 });
             }
             
+            // Si el mensaje se envió correctamente, mostrar mensaje de éxito
             showToast({
                 mensaje: "Gracias por enviar tu mensaje",
                 tipo: "success",
             });
 
+            // Limpiar campos del formulario
             form.reset();
         } catch(error){
             showToast({
                 mensaje: "Error al enviar el mensaje, por favor intenta de nuevo más tarde.",
                 tipo: "error",
             });
+        } finally {
+            btnEnviarMensaje.disabled = false;
+            btnEnviarMensaje.textContent = "Enviar mensaje";
         }
     });
 </script>
