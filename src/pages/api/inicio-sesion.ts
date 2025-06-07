@@ -11,7 +11,7 @@ export const POST: APIRoute = async ({ params, request, cookies, redirect }) => 
         });
     }
 
-    const correcta = await verificarContrasena(contrasena);
+    const { correcta, rol } = await verificarContrasena(contrasena);
 
     if(!correcta) {
         return new Response(JSON.stringify({ error: "Contraseña incorrecta" }), {
@@ -19,7 +19,7 @@ export const POST: APIRoute = async ({ params, request, cookies, redirect }) => 
         });
     }
 
-    const token = crearToken();
+    const token = crearToken(rol);
 
     cookies.set("auth-token", token, {
         httpOnly: true,

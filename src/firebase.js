@@ -32,6 +32,15 @@ export async function enviarAsistencia(asistencias){
     return docObj;
 }
 
+export async function obtenerListaAsistencias(){
+    const coleccion = collection(db, "asistencias");
+
+    const snapshot = await getDocs(coleccion);
+    const asistencias = snapshot.docs.map(doc => doc.data());
+
+    return asistencias;
+}
+
 export async function obtenerAsistencia(){
     const coleccion = collection(db, "asistencias");
 
@@ -83,9 +92,11 @@ export async function verificarContrasena(contrasena){
     const snapshot = await getDocs(coleccion);
     const contrasenas = snapshot.docs.map(doc => doc.data());
 
-    const correcta = contrasenas.some(({ contrasena: contrasenaGuardada }) => {
-        return bcrypt.compareSync(contrasena, contrasenaGuardada);
+    const documento = contrasenas.find(({ contrasena: contrasenaGuardada }) => {
+        return bcrypt.compareSync(contrasena, contrasenaGuardada)
     })
+    
+    if(!documento) return { correcta: false, rol: null };
 
-    return correcta;
+    return { correcta: true, rol: documento.rol };
 }
