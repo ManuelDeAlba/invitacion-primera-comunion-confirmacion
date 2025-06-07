@@ -60,6 +60,7 @@
         btnEnviarMensaje.textContent = "Enviando...";
 
         // Enviar mensaje a la base de datos
+        let element;
         try{
             const res = await fetch("/api/mensaje", {
                 method: "POST",
@@ -68,9 +69,14 @@
                 },
                 body: JSON.stringify({ nombre, mensaje }),
             });
+            element = showToast({
+                mensaje: "Enviando mensaje...",
+                tipo: "info"
+            });
             if (!res.ok) {
                 // Si la respuesta no es exitosa, mostrar error
                 return showToast({
+                    elemento: element,
                     mensaje: "Error al enviar el mensaje, por favor intenta de nuevo más tarde.",
                     tipo: "error",
                 });
@@ -78,6 +84,7 @@
             
             // Si el mensaje se envió correctamente, mostrar mensaje de éxito
             showToast({
+                elemento: element,
                 mensaje: "Gracias por enviar tu mensaje",
                 tipo: "success",
             });
@@ -86,6 +93,7 @@
             form.reset();
         } catch(error){
             showToast({
+                elemento: element,
                 mensaje: "Error al enviar el mensaje, por favor intenta de nuevo más tarde.",
                 tipo: "error",
             });

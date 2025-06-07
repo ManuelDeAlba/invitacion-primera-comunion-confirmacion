@@ -30,12 +30,17 @@ import Suma from "@/icons/Suma.astro";
     const min = parseInt(inputAsistencia.min);
     const max = parseInt(inputAsistencia.max);
 
-    function mostrarMensajeGracias() {
+    function toggleMensajeGracias() {
         if (localStorage.getItem("asistencia") === "true") {
             // Si ya se ha confirmado la asistencia, mostrar mensaje de agradecimiento
             mensajeGracias.classList.remove('hidden');
             mensajeGracias.classList.add('flex');
             form.classList.add('hidden');
+        } else {
+            // Si no se ha confirmado la asistencia, ocultar mensaje de agradecimiento
+            mensajeGracias.classList.add('hidden');
+            mensajeGracias.classList.remove('flex');
+            form.classList.remove('hidden');
         }
     }
 
@@ -56,9 +61,10 @@ import Suma from "@/icons/Suma.astro";
         // Optimistic UI update
         // Mostrar el mensaje de agradecimiento inmediatamente para evitar que lo manden muchas veces
         localStorage.setItem("asistencia", "true");
-        mostrarMensajeGracias();
+        toggleMensajeGracias();
 
         // Enviar asistencia a la base de datos
+        let element;
         try{
             const res = await fetch("/api/asistencia", {
                 method: "POST",
@@ -69,15 +75,21 @@ import Suma from "@/icons/Suma.astro";
                     asistencia: Math.max(min, Math.min(parseInt(asistencia), max))
                 }),
             });
+            element = showToast({
+                mensaje: "Enviando asistencia...",
+                tipo: "info"
+            });
             if (!res.ok) {
                 localStorage.removeItem("asistencia");
                 return showToast({
+                    elemento: element,
                     mensaje: "Error al enviar la asistencia, por favor intenta de nuevo más tarde.",
                     tipo: "error",
                 });
             }
 
             showToast({
+                elemento: element,
                 mensaje: "Gracias por confirmar tu asistencia",
                 tipo: "success",
             });
@@ -85,7 +97,9 @@ import Suma from "@/icons/Suma.astro";
             form.reset();
         } catch(error){
             localStorage.removeItem("asistencia");
+            toggleMensajeGracias();
             showToast({
+                elemento: element,
                 mensaje: "Error al enviar la asistencia, por favor intenta de nuevo más tarde.",
                 tipo: "error",
             });
@@ -109,7 +123,7 @@ import Suma from "@/icons/Suma.astro";
     });
 
     window.addEventListener('load', () => {
-        mostrarMensajeGracias();
+        toggleMensajeGracias();
     });
 </script>
 
