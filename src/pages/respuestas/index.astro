@@ -4,6 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import { obtenerAsistencia, obtenerEnviosAsistencia, obtenerListaAsistencias, obtenerMensajes } from "@/firebase";
 import FlechaIzquierda from "@/icons/FlechaIzquierda.astro";
 import Salir from "@/icons/Salir.astro";
+import BotonBorrarAsistencia from "@/components/admin/BotonBorrarAsistencia.astro";
 
 const asistencias = await obtenerListaAsistencias();
 
@@ -14,6 +15,10 @@ const mensajes = await obtenerMensajes();
 const dateFormatter = new Intl.DateTimeFormat("es-MX", {
     dateStyle: "medium",
     timeStyle: "short",
+});
+const longDateFormatter = new Intl.DateTimeFormat("es-MX", {
+    dateStyle: "medium",
+    timeStyle: "long",
 });
 
 const rol: string | null = Astro.locals.rol;
@@ -35,20 +40,28 @@ const rol: string | null = Astro.locals.rol;
         <div class="w-[90%] max-w-3xl bg-white mx-auto flex flex-col justify-center items-center gap-4 p-8 rounded-md">
             <h2 class="text-lg font-bold text-black/80">Asistencias totales:</h2>
             <span class="text-5xl font-bold text-amber-600" id="span-asistencias">0</span>
-            <span class="text-black/80 self-end text-sm text-right">{totalEnviosAsistencia} {totalEnviosAsistencia === 1 ? "persona envió su respuesta" : "personas enviaron sus respuestas"}</span>
+            <span class="text-black/80 self-end text-sm text-right" id="span-respuestas" data-respuestas={totalEnviosAsistencia}>{totalEnviosAsistencia} {totalEnviosAsistencia === 1 ? "persona envió su respuesta" : "personas enviaron sus respuestas"}</span>
 
             {
                 rol == "admin" && (
-                    asistencias.map(({id, fecha, invitados}: any) => {
-                        return (
-                            <div class="w-full p-2 flex flex-col gap-1 border-2 border-slate-500 rounded-md">
-                                {/* <span>Timestamp: {fecha}</span> */}
-                                <span>Fecha: {dateFormatter.format(new Date(parseInt(fecha)))}</span>
-                                <span>Invitados: {invitados}</span>
-                                <button data-id={id} class="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-md">Borrar</button>
-                            </div>
-                        )
-                    })
+                    <label class="peer hover:underline cursor-pointer self-end text-black/80">
+                        Ver asistencias
+                        <input type="checkbox" class="hidden" />
+                    </label>
+                    <div class="hidden w-full peer-has-[:checked]:flex flex-col gap-4">
+                        {
+                            asistencias.map(({id, fecha, invitados}: any) => {
+                                return (
+                                    <div class="w-full p-2 flex flex-col gap-1 border-2 border-slate-300 rounded-md">
+                                        <span>{fecha}</span>
+                                        <p>Invitados: {invitados}</p>
+                                        <p data-long-fecha={fecha}>Fecha: {longDateFormatter.format(new Date(parseInt(fecha)))}</p>
+                                        <BotonBorrarAsistencia data-id={id} data-invitados={invitados} data-borrar-asistencia class="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-md">Borrar</BotonBorrarAsistencia>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
                 )
             }
         </div>
@@ -77,7 +90,6 @@ const rol: string | null = Astro.locals.rol;
 
 <script define:vars={{ totalAsistencias }}>
     const spanAsistencias = document.getElementById('span-asistencias');
-    const btnSalir = document.getElementById('btnSalir');
 
     let contador = 0;
     
@@ -91,6 +103,10 @@ const rol: string | null = Astro.locals.rol;
         spanAsistencias.textContent = contador.toString();
         contador++;
     }, 1000 / totalAsistencias)
+</script>
+
+<script>
+    const btnSalir = document.getElementById('btnSalir') as HTMLButtonElement;
 
     // Boton para cerrar sesión
     btnSalir.addEventListener("click", async () => {
@@ -103,17 +119,28 @@ const rol: string | null = Astro.locals.rol;
     // Actualizar la fecha de los mensajes con el timezone y locale correcto
     const locale = Intl.DateTimeFormat().resolvedOptions().locale;
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const fechasMensajes = document.querySelectorAll("[data-fecha]");
+    
+    const fechasMensajes = document.querySelectorAll<HTMLElement>("[data-fecha]");
     fechasMensajes.forEach(fecha => {
         const dateFormatter = new Intl.DateTimeFormat(locale, {
             dateStyle: "medium",
             timeStyle: "short",
             timeZone: timezone
         });
+        if(!fecha.dataset.fecha) return;
         fecha.textContent = dateFormatter.format(new Date(parseInt(fecha.dataset.fecha)));
     });
 
-    //TODO: Cambiar también los formatos de las fechas de las asistencias
+    const longFechasMensajes = document.querySelectorAll<HTMLElement>("[data-long-fecha]");
+    longFechasMensajes.forEach(fecha => {
+        const longDateFormatter = new Intl.DateTimeFormat(locale, {
+            dateStyle: "medium",
+            timeStyle: "long",
+            timeZone: timezone
+        });
+        if(!fecha.dataset.longFecha) return;
+        fecha.textContent = longDateFormatter.format(new Date(parseInt(fecha.dataset.longFecha)));
+    });
+
     //TODO: Boton para borrar mensajes (funcion firebase, endpoint, boton, fetch)
-    //TODO: Hacer que se puedan borrar las asistencias (funcion firebase, endpoint, boton, fetch)
 </script>
