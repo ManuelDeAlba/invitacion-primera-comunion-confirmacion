@@ -39,7 +39,8 @@
                 const spanMensajes = document.getElementById('span-mensajes');
                 if(spanMensajes) {
                     const currentCount = parseInt(spanMensajes.dataset.mensajes || "0");
-                    spanMensajes.textContent = (currentCount - 1).toString();
+                    spanMensajes.dataset.mensajes = (currentCount - 1).toString();
+                    spanMensajes.textContent = `( ${(currentCount - 1).toString()} )`;
                 }
 
                 // Mostrar mensaje de éxito

@@ -46,6 +46,7 @@
                 const spanRespuestas = document.getElementById('span-respuestas');
                 if(spanRespuestas) {
                     const currentResponses = parseInt(spanRespuestas.dataset.respuestas || "0");
+                    spanRespuestas.dataset.respuestas = (currentResponses - 1).toString();
                     spanRespuestas.textContent = `${currentResponses - 1} ${currentResponses - 1 === 1 ? "persona envió su respuesta" : "personas enviaron sus respuestas"}`;
                 }
 
