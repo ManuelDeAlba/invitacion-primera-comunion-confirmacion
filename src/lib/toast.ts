@@ -1,23 +1,30 @@
 type ToastTypes = 'success' | 'error' | 'info' | 'warning';
 
 interface ShowToastProps {
+    elemento?: HTMLElement | null;
     mensaje: string;
     duracion?: number;
     tipo?: ToastTypes;
 }
 
-export function showToast({ mensaje, duracion = 3000, tipo="success"}: ShowToastProps) {
+export function showToast({ elemento, mensaje, duracion = 3000, tipo="success"}: ShowToastProps): HTMLElement | null {
     const toaster = document.querySelector(".toaster") as HTMLDivElement;
 
     if(!toaster){
-        return console.error("No se encontró el elemento con la clase 'toaster'. Asegúrate de que exista en el DOM.");
+        console.error("No se encontró el elemento con la clase 'toaster'. Asegúrate de que exista en el DOM.");
+        return null;
     }
 
-    const toastItem = document.createElement("div");
+    let toastItem;
+    if(elemento){
+        toastItem = elemento;
+    } else {
+        toastItem = document.createElement("div");
+    }
     toastItem.className = `toast-item text-lg rounded-md px-8 py-2`;
     toastItem.classList.add(`toast-${tipo}`);
     toastItem.textContent = mensaje;
-    toaster.appendChild(toastItem);
+    if(!elemento) toaster.appendChild(toastItem);
 
     // Cerrar el toast después de la duración especificada
     setTimeout(() => {
@@ -26,4 +33,6 @@ export function showToast({ mensaje, duracion = 3000, tipo="success"}: ShowToast
             toastItem.remove();
         });
     }, duracion);
+
+    return toastItem;
 }
