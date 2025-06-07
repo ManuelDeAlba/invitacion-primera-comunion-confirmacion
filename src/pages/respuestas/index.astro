@@ -5,6 +5,7 @@ import { obtenerAsistencia, obtenerEnviosAsistencia, obtenerListaAsistencias, ob
 import FlechaIzquierda from "@/icons/FlechaIzquierda.astro";
 import Salir from "@/icons/Salir.astro";
 import BotonBorrarAsistencia from "@/components/admin/BotonBorrarAsistencia.astro";
+import BotonBorrarMensaje from "@/components/admin/BotonBorrarMensaje.astro";
 
 const asistencias = await obtenerListaAsistencias();
 
@@ -69,7 +70,7 @@ const rol: string | null = Astro.locals.rol;
         <div class="w-[90%] max-w-3xl bg-white mx-auto flex flex-col justify-center gap-4 p-8 rounded-md">
             <h2 class="text-lg font-bold text-black/80">
                 Mensajes 
-                <span class="text-sm text-black/60">( {mensajes.length} )</span>:
+                <span class="text-sm text-black/60" id="span-mensajes" data-mensajes={mensajes.length}>( {mensajes.length} )</span>:
             </h2>
             {
                 mensajes.length > 0 ? (
@@ -78,6 +79,13 @@ const rol: string | null = Astro.locals.rol;
                             <p class="font-bold text-black/80">{mensaje.nombre}</p>
                             <p class="text-gray-500 text-sm text-right" data-fecha={mensaje.fecha}>{dateFormatter.format(new Date(mensaje.fecha))}</p>
                             <p>{mensaje.mensaje}</p>
+                            {
+                                rol == "admin" && (
+                                    <BotonBorrarMensaje data-id={mensaje.id} data-borrar-mensaje class="block ml-auto bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-md">
+                                        Borrar
+                                    </BotonBorrarMensaje>
+                                )
+                            }
                         </div>
                     ))
                 ) : (

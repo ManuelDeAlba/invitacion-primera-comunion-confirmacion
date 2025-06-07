@@ -1,0 +1,61 @@
+<button {...Astro.props}>
+    <slot />
+</button>
+
+<script>
+    import { showToast } from "@/lib/toast";
+
+    const botonesBorrarMensaje = document.querySelectorAll("[data-borrar-mensaje]");
+    botonesBorrarMensaje.forEach(btn => {
+        const boton = btn as HTMLButtonElement;
+        boton.addEventListener("click", async (e) => {
+            const target = e.target as HTMLButtonElement;
+            const id = target.dataset.id;
+
+            let element;
+            try{
+                const res = await fetch(`/api/mensaje`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ id })
+                });
+                element = showToast({
+                    mensaje: "Borrando mensaje...",
+                    tipo: "info"
+                });
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                if(!res.ok) {
+                    showToast({
+                        elemento: element,
+                        mensaje: "Error al borrar el mensaje",
+                        tipo: "error"
+                    });
+                }
+                // Eliminar el elemento del DOM
+                const closestDiv = target.closest("div");
+                if(closestDiv) closestDiv.remove();
+                // Actualizar el contador de mensajes
+                const spanMensajes = document.getElementById('span-mensajes');
+                if(spanMensajes) {
+                    const currentCount = parseInt(spanMensajes.dataset.mensajes || "0");
+                    spanMensajes.textContent = (currentCount - 1).toString();
+                }
+
+                // Mostrar mensaje de éxito
+                showToast({
+                    elemento: element,
+                    mensaje: "Mensaje borrado correctamente",
+                    tipo: "success"
+                });
+            } catch(error){
+                showToast({
+                    elemento: element,
+                    mensaje: "Error al borrar el mensaje",
+                    tipo: "error"
+                });
+            }
+        });
+    })
+</script>

@@ -92,6 +92,12 @@ export async function obtenerMensajes(){
     return mensajes;
 }
 
+export async function borrarMensaje(id){
+    const documento = doc(db, "mensajes", id);
+
+    await deleteDoc(documento);
+}
+
 export async function verificarContrasena(contrasena){
     const coleccion = collection(db, "contrasenas");
 
