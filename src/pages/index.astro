@@ -38,6 +38,15 @@ export const prerender = true;
 	</main>
 </Layout>
 
+<script>
+	// Assign a unique user ID if it doesn't exist
+	// This is used to make relationships between their responses from attendances and messages
+	// and to avoid asking for the same information multiple times like the name
+	if(!localStorage.getItem("user_id")) {
+		localStorage.setItem("user_id", crypto.randomUUID());
+	}
+</script>
+
 <style>
 	body{
 		background-color: var(--color-slate-100);

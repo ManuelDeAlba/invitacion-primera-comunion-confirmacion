@@ -72,6 +72,7 @@ import Suma from "@/icons/Suma.astro";
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    userid: localStorage.getItem("user_id"),
                     asistencia: Math.max(min, Math.min(parseInt(asistencia), max))
                 }),
             });

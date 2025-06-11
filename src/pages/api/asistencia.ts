@@ -2,9 +2,12 @@ import { borrarAsistencia, enviarAsistencia } from "@/firebase";
 import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ request }) => {
-    const { asistencia } = await request.json();
+    const { userid, asistencia: asistencias } = await request.json();
 
-    const res = await enviarAsistencia(asistencia);
+    const res = await enviarAsistencia({
+        userid,
+        asistencias
+    });
 
     return new Response(JSON.stringify(res));
 }

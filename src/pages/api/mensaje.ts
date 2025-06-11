@@ -2,9 +2,10 @@ import { enviarMensaje, borrarMensaje } from "@/firebase";
 import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ request }) => {
-    const { nombre, mensaje } = await request.json();
+    const { userid, nombre, mensaje } = await request.json();
 
     const res = await enviarMensaje({
+        userid,
         nombre,
         mensaje,
     });

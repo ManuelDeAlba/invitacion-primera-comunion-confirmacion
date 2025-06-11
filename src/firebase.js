@@ -17,12 +17,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export async function enviarAsistencia(asistencias){
+export async function enviarAsistencia({ userid, asistencias }){
     const id = Date.now() + crypto.randomUUID();
     const documento = doc(db, "asistencias", id);
 
     const docObj = {
         id: id,
+        userid,
         fecha: Date.now(),
         invitados: parseInt(asistencias)
     }
@@ -67,12 +68,13 @@ export async function borrarAsistencia(id){
     await deleteDoc(documento);
 }
 
-export async function enviarMensaje({ nombre, mensaje }){
+export async function enviarMensaje({ userid, nombre, mensaje }){
     const id = Date.now() + crypto.randomUUID();
     const documento = doc(db, "mensajes", id);
 
     const docObj = {
         id: id,
+        userid,
         fecha: Date.now(),
         nombre: nombre,
         mensaje: mensaje

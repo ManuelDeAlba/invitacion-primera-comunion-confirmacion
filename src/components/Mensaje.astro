@@ -67,7 +67,11 @@
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ nombre, mensaje }),
+                body: JSON.stringify({ 
+                    userid: localStorage.getItem("user_id"),
+                    nombre,
+                    mensaje
+                }),
             });
             element = showToast({
                 mensaje: "Enviando mensaje...",
