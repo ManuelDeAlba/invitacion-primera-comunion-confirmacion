@@ -88,7 +88,11 @@ const rol: string | null = Astro.locals.rol;
                             <div class="w-full space-y-2 p-4 bg-amber-50 rounded-md shadow-md">
                                 <p class="font-bold text-black/80">
                                     <span>{mensaje.nombre}</span>
-                                    <span class="text-gray-500 text-xs">{invitados ? ` (${invitados} invitados)` : ""}</span>
+                                    {
+                                        Boolean(invitados) && (
+                                            <span class="text-gray-500 text-xs">({invitados} {invitados == 1 ? "invitado" : "invitados"})</span>        
+                                        )
+                                    }
                                 </p>
                                 {
                                     rol == "admin" && mensaje.userid && (
