@@ -7,10 +7,10 @@ import Salir from "@/icons/Salir.astro";
 import BotonBorrarAsistencia from "@/components/admin/BotonBorrarAsistencia.astro";
 import BotonBorrarMensaje from "@/components/admin/BotonBorrarMensaje.astro";
 
-const asistencias = await obtenerListaAsistencias();
-
 const totalAsistencias = await obtenerAsistencia();
 const totalEnviosAsistencia = await obtenerEnviosAsistencia();
+
+const asistencias = await obtenerListaAsistencias();
 const mensajes = await obtenerMensajes();
 
 const dateFormatter = new Intl.DateTimeFormat("es-MX", {
@@ -51,12 +51,19 @@ const rol: string | null = Astro.locals.rol;
                     </label>
                     <div class="hidden w-full peer-has-[:checked]:flex flex-col gap-4">
                         {
-                            asistencias.map(({id, fecha, invitados}: any) => {
+                            asistencias.map(({userid, id, fecha, invitados}: any) => {
+                                const mensajesPersona = mensajes.filter(mensaje => userid && mensaje.userid && mensaje.userid == userid);
+                                const nombres = Array.from(new Set(mensajesPersona.map(mensaje => mensaje.nombre))).join(", ");
                                 return (
                                     <div class="w-full p-2 flex flex-col gap-1 border-2 border-slate-300 rounded-md">
                                         <span>{fecha}</span>
                                         <p>Invitados: {invitados}</p>
                                         <p data-long-fecha={fecha}>Fecha: {longDateFormatter.format(new Date(parseInt(fecha)))}</p>
+                                        {
+                                            mensajesPersona.length > 0 && (
+                                                <span>Mensajes: {nombres}</span>
+                                            )
+                                        }
                                         <BotonBorrarAsistencia data-id={id} data-invitados={invitados} data-borrar-asistencia class="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-md">Borrar</BotonBorrarAsistencia>
                                     </div>
                                 )
@@ -74,20 +81,32 @@ const rol: string | null = Astro.locals.rol;
             </h2>
             {
                 mensajes.length > 0 ? (
-                    mensajes.map(mensaje => (
-                        <div class="w-full space-y-2 p-4 bg-amber-50 rounded-md shadow-md">
-                            <p class="font-bold text-black/80">{mensaje.nombre}</p>
-                            <p class="text-gray-500 text-sm text-right" data-fecha={mensaje.fecha}>{dateFormatter.format(new Date(mensaje.fecha))}</p>
-                            <p>{mensaje.mensaje}</p>
-                            {
-                                rol == "admin" && (
-                                    <BotonBorrarMensaje data-id={mensaje.id} data-borrar-mensaje class="block ml-auto bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-md">
-                                        Borrar
-                                    </BotonBorrarMensaje>
-                                )
-                            }
-                        </div>
-                    ))
+                    mensajes.map(mensaje => {
+                        const asistenciasPersona = asistencias.find(asistencia => asistencia.userid && mensaje.userid && asistencia.userid == mensaje.userid);
+                        const invitados = asistenciasPersona ? asistenciasPersona.invitados : null;
+                        return (
+                            <div class="w-full space-y-2 p-4 bg-amber-50 rounded-md shadow-md">
+                                <p class="font-bold text-black/80">
+                                    <span>{mensaje.nombre}</span>
+                                    <span class="text-gray-500 text-xs">{invitados ? ` (${invitados} invitados)` : ""}</span>
+                                </p>
+                                {
+                                    rol == "admin" && mensaje.userid && (
+                                        <span class="text-gray-500 text-xs">userID: {mensaje.userid}</span>
+                                    )
+                                }
+                                <p class="text-gray-500 text-sm text-right" data-fecha={mensaje.fecha}>{dateFormatter.format(new Date(mensaje.fecha))}</p>
+                                <p>{mensaje.mensaje}</p>
+                                {
+                                    rol == "admin" && (
+                                        <BotonBorrarMensaje data-id={mensaje.id} data-borrar-mensaje class="block ml-auto bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-md">
+                                            Borrar
+                                        </BotonBorrarMensaje>
+                                    )
+                                }
+                            </div>
+                        )
+                    })
                 ) : (
                     <p class="text-gray-500">No hay mensajes aún.</p>
                 )
@@ -149,6 +168,4 @@ const rol: string | null = Astro.locals.rol;
         if(!fecha.dataset.longFecha) return;
         fecha.textContent = longDateFormatter.format(new Date(parseInt(fecha.dataset.longFecha)));
     });
-
-    //TODO: Boton para borrar mensajes (funcion firebase, endpoint, boton, fetch)
 </script>
