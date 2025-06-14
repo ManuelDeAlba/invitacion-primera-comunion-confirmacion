@@ -5,9 +5,10 @@ interface ShowToastProps {
     mensaje: string;
     duracion?: number;
     tipo?: ToastTypes;
+    promise?: boolean;
 }
 
-export function showToast({ elemento, mensaje, duracion = 3000, tipo="success"}: ShowToastProps): HTMLElement | null {
+export function showToast({ elemento, mensaje, duracion = 3000, tipo="success", promise=false }: ShowToastProps): HTMLElement | null {
     const toaster = document.querySelector(".toaster") as HTMLDivElement;
 
     if(!toaster){
@@ -15,24 +16,35 @@ export function showToast({ elemento, mensaje, duracion = 3000, tipo="success"}:
         return null;
     }
 
-    let toastItem;
+    // Limpiar el timeout anterior si existe
     if(elemento){
-        toastItem = elemento;
-    } else {
-        toastItem = document.createElement("div");
+        const prevTimeoutId = (elemento as any)._timeoutId;
+        if (prevTimeoutId) {
+            console.log(prevTimeoutId);
+            clearTimeout(prevTimeoutId);
+        }
     }
+
+    let toastItem = elemento || document.createElement("div");
     toastItem.className = `toast-item text-lg rounded-md px-8 py-2`;
     toastItem.classList.add(`toast-${tipo}`);
     toastItem.textContent = mensaje;
-    if(!elemento) toaster.appendChild(toastItem);
+    if(!toastItem.isConnected) toaster.appendChild(toastItem);
 
     // Cerrar el toast después de la duración especificada
-    setTimeout(() => {
+    // Si es una promesa, no se cierra automáticamente
+    if (promise) return toastItem;
+
+    const toasterId = setTimeout(() => {
         toastItem.classList.add("cerrado");
-        toastItem.addEventListener("transitionend", () => {
+        function transitionend(){
             toastItem.remove();
-        });
+            toastItem.removeEventListener("transitionend", transitionend);
+        }
+        toastItem.addEventListener("transitionend", transitionend);
     }, duracion);
+
+    (toastItem as any)._timeoutId = toasterId;
 
     return toastItem;
 }
