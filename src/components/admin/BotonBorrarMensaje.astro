@@ -12,7 +12,11 @@
             const target = e.target as HTMLButtonElement;
             const id = target.dataset.id;
 
-            let element;
+            let element = showToast({
+                mensaje: "Borrando mensaje...",
+                tipo: "info",
+                promise: true
+            });
             try{
                 const res = await fetch(`/api/mensaje`, {
                     method: "DELETE",
@@ -20,10 +24,6 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({ id })
-                });
-                element = showToast({
-                    mensaje: "Borrando mensaje...",
-                    tipo: "info"
                 });
                 if(!res.ok) {
                     return showToast({

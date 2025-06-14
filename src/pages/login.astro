@@ -33,23 +33,43 @@ import Layout from "@/layouts/Layout.astro";
 
     form.addEventListener('submit', async e => {
         e.preventDefault();
+
+        let element = showToast({
+            mensaje: "Iniciando sesión...",
+            tipo: "info",
+            promise: true
+        });
         
-        const res = await fetch("/api/inicio-sesion", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                contrasena: inputContrasena.value
+        try{
+            const res = await fetch("/api/inicio-sesion", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    contrasena: inputContrasena.value
+                })
             })
-        })
-        if(res.redirected) window.location.href = res.url;
-        if(res.status === 401) {
+            if(res.redirected){
+                window.location.href = res.url;
+                return;
+            }
+
+            const { error } = await res.json();
+            if(!res.ok) {
+                showToast({
+                    elemento: element,
+                    mensaje: error || "Error al iniciar sesión",
+                    tipo: "error"
+                });
+                form.reset();
+            }
+        } catch(error){
             showToast({
-                mensaje: "Contraseña incorrecta",
+                elemento: element,
+                mensaje: "Error al iniciar sesión. Inténtalo de nuevo más tarde.",
                 tipo: "error"
             });
-            form.reset();
         }
     });
 
