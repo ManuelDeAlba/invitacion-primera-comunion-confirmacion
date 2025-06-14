@@ -4,18 +4,22 @@ import Suma from "@/icons/Suma.astro";
 ---
 
 <form id="form-asistencia" class="max-w-fit mx-auto flex flex-col justify-center items-center gap-4 p-8 rounded-md bg-white shadow-md">
-    <h2 class="text-lg">Confirmar asistencia a la fiesta</h2>
+    <h2 class="text-lg text-center text-balance">Por favor, confirma tu asistencia a la fiesta</h2>
     <div class="w-full flex flex-col 2xs:flex-row gap-2">
         <button type="button" id="btnMenos" class="flex justify-center items-center w-full bg-amber-500 hover:bg-amber-600 text-white size-10 rounded-md"><Resta /></button>
         <input id="inputAsistencia" type="number" id="asistencia" name="asistencia" min="1" max="5" value="1" class="w-full size-10 outline-none border-2 rounded-md text-center" />
         <button type="button" id="btnMas" class="flex justify-center items-center w-full bg-amber-500 hover:bg-amber-600 text-white size-10 rounded-md"><Suma /></button>
     </div>
-    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white py-2 px-8 rounded-md">Enviar</button>
+    <button id="btnEnviarAsistencia" type="submit" class="w-full bg-amber-500 hover:bg-amber-600 disabled:bg-amber-800 text-white py-2 px-8 rounded-md">Enviar</button>
 </form>
 
 <section class="mensaje-gracias hidden flex-col gap-2 justify-center items-center bg-amber-100 p-8 rounded-md shadow-md text-center">
     <p class="text-3xl text-amber-600 font-bold">¡Gracias por confirmar tu asistencia!</p>
     <p class="text-lg text-gray-500">¡Nos vemos pronto!</p>
+    <div class="w-full flex justify-center gap-2">
+        <span class="text-black/50 text-sm">¿Confirmaste por error?</span>
+        <button id="btnCancelarAsistencia" class="text-amber-500 hover:text-amber-600 font-semibold text-sm">Cancelar asistencia</button>
+    </div>
 </section>
 
 <script>
@@ -26,12 +30,14 @@ import Suma from "@/icons/Suma.astro";
     const btnMas = document.getElementById('btnMas') as HTMLButtonElement;
     const inputAsistencia = document.getElementById('inputAsistencia') as HTMLInputElement;
     const mensajeGracias = document.querySelector('.mensaje-gracias') as HTMLDivElement;
+    const btnEnviarAsistencia = document.getElementById('btnEnviarAsistencia') as HTMLButtonElement;
+    const btnCancelarAsistencia = document.getElementById('btnCancelarAsistencia') as HTMLButtonElement;
 
     const min = parseInt(inputAsistencia.min);
     const max = parseInt(inputAsistencia.max);
 
     function toggleMensajeGracias() {
-        if (localStorage.getItem("asistencia") === "true") {
+        if (localStorage.getItem("asistencia")) {
             // Si ya se ha confirmado la asistencia, mostrar mensaje de agradecimiento
             mensajeGracias.classList.remove('hidden');
             mensajeGracias.classList.add('flex');
@@ -44,11 +50,12 @@ import Suma from "@/icons/Suma.astro";
         }
     }
 
+    // Enviar la asistencia a la base de datos
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         // Comprobar si ya se ha confirmado la asistencia
-        if(localStorage.getItem("asistencia") === "true"){
+        if(localStorage.getItem("asistencia")){
             form.reset();
             return showToast({
                 mensaje: "Gracias por acompañarme, ya has confirmado tu asistencia.",
@@ -58,13 +65,17 @@ import Suma from "@/icons/Suma.astro";
 
         const asistencia = inputAsistencia.value;
         
-        // Optimistic UI update
-        // Mostrar el mensaje de agradecimiento inmediatamente para evitar que lo manden muchas veces
-        localStorage.setItem("asistencia", "true");
-        toggleMensajeGracias();
+        // Deshabilitar el botón de enviar asistencia
+        btnEnviarAsistencia.disabled = true;
+        btnEnviarAsistencia.textContent = "Enviando...";
+
+        let element = showToast({
+            mensaje: "Enviando asistencia...",
+            tipo: "info",
+            promise: true
+        });
 
         // Enviar asistencia a la base de datos
-        let element;
         try{
             const res = await fetch("/api/asistencia", {
                 method: "POST",
@@ -76,10 +87,7 @@ import Suma from "@/icons/Suma.astro";
                     asistencia: Math.max(min, Math.min(parseInt(asistencia), max))
                 }),
             });
-            element = showToast({
-                mensaje: "Enviando asistencia...",
-                tipo: "info"
-            });
+            const { id } = await res.json();
             if (!res.ok) {
                 localStorage.removeItem("asistencia");
                 return showToast({
@@ -95,15 +103,78 @@ import Suma from "@/icons/Suma.astro";
                 tipo: "success",
             });
 
+            // Update the localstorage data
+            localStorage.setItem("asistencia", JSON.stringify({ asistencia, id }));
             form.reset();
         } catch(error){
             localStorage.removeItem("asistencia");
-            toggleMensajeGracias();
             showToast({
                 elemento: element,
                 mensaje: "Error al enviar la asistencia, por favor intenta de nuevo más tarde.",
                 tipo: "error",
             });
+        } finally {
+            btnEnviarAsistencia.disabled = false;
+            btnEnviarAsistencia.textContent = "Enviar";
+            toggleMensajeGracias();
+        }
+    });
+
+    // Cancelar asistencia
+    btnCancelarAsistencia.addEventListener('click', async () => {
+        // Try to get the attendance id from localStorage
+        const idLocalStorage = JSON.parse(localStorage.getItem("asistencia") || "{}").id;
+        if(!idLocalStorage){
+            // If there is different format for localStorage or no id is found, delete the localStorage item
+            // to show the form again, but without actually deleting the attendance in the database
+            localStorage.removeItem("asistencia");
+            toggleMensajeGracias();
+            return;
+        }
+
+        // Deshabilitar el botón de cancelar asistencia
+        btnCancelarAsistencia.disabled = true;
+        
+        let element = showToast({
+            mensaje: "Cancelando asistencia...",
+            tipo: "info",
+            promise: true
+        });
+
+        try{
+            const res = await fetch("/api/asistencia", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: idLocalStorage,
+                }),
+            });
+            if (!res.ok) {
+                return showToast({
+                    elemento: element,
+                    mensaje: "Error al cancelar la asistencia, por favor intenta de nuevo más tarde.",
+                    tipo: "error",
+                });
+            }
+
+            showToast({
+                elemento: element,
+                mensaje: "Asistencia cancelada correctamente",
+                tipo: "success",
+            });
+
+            localStorage.removeItem("asistencia");
+        } catch (error){
+            showToast({
+                elemento: element,
+                mensaje: "Error al cancelar la asistencia, por favor intenta de nuevo más tarde.",
+                tipo: "error",
+            });
+        } finally {
+            btnCancelarAsistencia.disabled = false;
+            toggleMensajeGracias();
         }
     });
 

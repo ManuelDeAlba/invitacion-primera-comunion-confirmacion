@@ -15,7 +15,12 @@ export const POST: APIRoute = async ({ request }) => {
 export const DELETE: APIRoute = async ({ request }) => {
     const { id } = await request.json();
 
-    const res = await borrarAsistencia(id);
+    let res;
+    try{
+        res = await borrarAsistencia(id.toString());
+    } catch(error){
+        return new Response(JSON.stringify({ error: "Error al borrar asistencia" }), { status: 500 });
+    }
 
     return new Response(JSON.stringify(res));
 }

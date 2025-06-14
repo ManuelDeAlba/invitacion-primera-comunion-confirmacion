@@ -58,9 +58,14 @@
         // Deshabilitar botón mientras se envía el mensaje
         btnEnviarMensaje.disabled = true;
         btnEnviarMensaje.textContent = "Enviando...";
+        
+        let element = showToast({
+            mensaje: "Enviando mensaje...",
+            tipo: "info",
+            promise: true
+        });
 
         // Enviar mensaje a la base de datos
-        let element;
         try{
             const res = await fetch("/api/mensaje", {
                 method: "POST",
@@ -72,10 +77,6 @@
                     nombre,
                     mensaje
                 }),
-            });
-            element = showToast({
-                mensaje: "Enviando mensaje...",
-                tipo: "info"
             });
             if (!res.ok) {
                 // Si la respuesta no es exitosa, mostrar error
