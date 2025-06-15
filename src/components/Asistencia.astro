@@ -14,7 +14,7 @@ import Suma from "@/icons/Suma.astro";
 </form>
 
 <section class="mensaje-gracias hidden flex-col gap-2 justify-center items-center bg-amber-100 p-8 rounded-md shadow-md text-center">
-    <p class="text-3xl text-amber-600 font-bold">¡Gracias por confirmar tu asistencia!</p>
+    <p class="text-3xl text-amber-600 font-bold" id="asistenciaGracias">¡Gracias por confirmar tu asistencia!</p>
     <p class="text-lg text-gray-500">¡Nos vemos pronto!</p>
     <div class="w-full flex justify-center gap-2">
         <span class="text-black/50 text-sm">¿Confirmaste por error?</span>
@@ -32,6 +32,7 @@ import Suma from "@/icons/Suma.astro";
     const mensajeGracias = document.querySelector('.mensaje-gracias') as HTMLDivElement;
     const btnEnviarAsistencia = document.getElementById('btnEnviarAsistencia') as HTMLButtonElement;
     const btnCancelarAsistencia = document.getElementById('btnCancelarAsistencia') as HTMLButtonElement;
+    const asistenciaGracias = document.getElementById('asistenciaGracias') as HTMLParagraphElement;
 
     const min = parseInt(inputAsistencia.min);
     const max = parseInt(inputAsistencia.max);
@@ -39,6 +40,9 @@ import Suma from "@/icons/Suma.astro";
     function toggleMensajeGracias() {
         if (localStorage.getItem("asistencia")) {
             // Si ya se ha confirmado la asistencia, mostrar mensaje de agradecimiento
+            const asistencias = JSON.parse(localStorage.getItem("asistencia") || "{}").asistencia;
+            if (asistenciaGracias) asistenciaGracias.textContent = `¡Gracias por confirmar ${asistencias == 1 ? "tu" : asistencias} asistencia${asistencias == 1 ? '' : 's'}!`;
+            
             mensajeGracias.classList.remove('hidden');
             mensajeGracias.classList.add('flex');
             form.classList.add('hidden');
