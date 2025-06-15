@@ -24,6 +24,7 @@ import Suma from "@/icons/Suma.astro";
 
 <script>
     import { showToast } from "@/lib/toast";
+    import { lanzarConfetti } from "@/lib/confetti";
 
     const form = document.getElementById('form-asistencia') as HTMLFormElement;
     const btnMenos = document.getElementById('btnMenos') as HTMLButtonElement;
@@ -106,6 +107,7 @@ import Suma from "@/icons/Suma.astro";
                 mensaje: "Gracias por confirmar tu asistencia",
                 tipo: "success",
             });
+            lanzarConfetti();
 
             // Update the localstorage data
             localStorage.setItem("asistencia", JSON.stringify({ asistencia, id }));

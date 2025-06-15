@@ -30,6 +30,8 @@ import Campana from '@/icons/Campana.astro';
 </section>
 
 <script>
+    import { lanzarConfetti } from "@/lib/confetti";
+
     const targetDate = new Date('2025-06-28T00:00:00').getTime();
     const misaDate = new Date('2025-06-28T12:00:00').getTime();
     const fiestaDate = new Date('2025-06-28T14:00:00').getTime();
@@ -38,6 +40,9 @@ import Campana from '@/icons/Campana.astro';
     const countdownElement = document.getElementById('countdown') as HTMLDivElement;
     const iniciadoElement = document.getElementById('iniciado') as HTMLDivElement;
     const eventoElement = document.getElementById('evento') as HTMLSpanElement;
+
+    let lastConfettiTime = 0;
+    const confettiCooldown = 1000; // 1 segundo de enfriamiento para los lanzamientos de confetti
 
     function actualizarContador(){
         const now = new Date().getTime();
@@ -85,6 +90,28 @@ import Campana from '@/icons/Campana.astro';
     }
 
     const intervalo = setInterval(actualizarContador, 1000);
+
+    // Observar el elemento para lanzar confetti
+    function intersectConfetti(){
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const now = Date.now();
+                    if(now - lastConfettiTime > confettiCooldown && now > targetDate && now < finDate){
+                        lanzarConfetti();
+                        lastConfettiTime = now;
+                    }
+                }
+            });
+        }, {
+            threshold: 0,
+            rootMargin: '-50% 0px -50% 0px', // Inicia la animación cuando el elemento está a la mitad de la pantalla
+        })
+        
+        observer.observe(iniciadoElement);
+    }
+
+    window.addEventListener("load", intersectConfetti);
 </script>
 
 <style is:global>
