@@ -23,8 +23,11 @@ import Suma from "@/icons/Suma.astro";
 </section>
 
 <script>
+    import { DATES } from "@/config";
     import { showToast } from "@/lib/toast";
     import { lanzarConfetti } from "@/lib/confetti";
+
+    const fiestaDate = new Date(DATES.FIESTA_DATE).getTime();
 
     const form = document.getElementById('form-asistencia') as HTMLFormElement;
     const btnMenos = document.getElementById('btnMenos') as HTMLButtonElement;
@@ -58,6 +61,15 @@ import Suma from "@/icons/Suma.astro";
     // Enviar la asistencia a la base de datos
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        // Comprobar si todavía no empieza la fiesta
+        const now = new Date().getTime();
+        if (fiestaDate < now) {
+            return showToast({
+                mensaje: "La fiesta ya ha comenzado.",
+                tipo: "warning",
+            });
+        }
 
         // Comprobar si ya se ha confirmado la asistencia
         if(localStorage.getItem("asistencia")){
@@ -201,6 +213,16 @@ import Suma from "@/icons/Suma.astro";
     });
 
     window.addEventListener('load', () => {
+        const now = new Date().getTime();
+        const distance = fiestaDate - now;
+
+        // Si ya inició la fiesta, no mostrar el formulario de asistencia
+        if (distance < 0) {
+            form.classList.add('hidden');
+            return;
+        }
+
+        // Si la fiesta aún no ha iniciado, mostrar el formulario de asistencia o hacer el toggle para el mensaje de gracias
         toggleMensajeGracias();
     });
 </script>

@@ -30,12 +30,13 @@ import Campana from '@/icons/Campana.astro';
 </section>
 
 <script>
+    import { DATES } from "@/config";
     import { lanzarConfetti } from "@/lib/confetti";
 
-    const targetDate = new Date('2025-06-28T00:00:00').getTime();
-    const misaDate = new Date('2025-06-28T12:00:00').getTime();
-    const fiestaDate = new Date('2025-06-28T14:00:00').getTime();
-    const finDate = new Date('2025-06-28T23:59:59').getTime();
+    const targetDate = new Date(DATES.TARGET_DATE).getTime();
+    const misaDate = new Date(DATES.MISA_DATE).getTime();
+    const fiestaDate = new Date(DATES.FIESTA_DATE).getTime();
+    const finDate = new Date(DATES.FIN_DATE).getTime();
 
     const countdownElement = document.getElementById('countdown') as HTMLDivElement;
     const iniciadoElement = document.getElementById('iniciado') as HTMLDivElement;
