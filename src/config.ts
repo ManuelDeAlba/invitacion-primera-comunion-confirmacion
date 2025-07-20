@@ -4,3 +4,5 @@ export const DATES = {
   FIESTA_DATE: '2025-06-28T14:00:00',
   FIN_DATE: '2025-06-28T23:59:59'
 };
+
+export const APP_NAME = "kimberly-cataleya-martinez-robles";

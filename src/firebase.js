@@ -1,7 +1,8 @@
 // Import the functions you need from the SDKs you need
 import bcrypt from "bcryptjs";
 import { initializeApp } from "firebase/app";
-import { collection, count, deleteDoc, doc, getAggregateFromServer, getDocs, getFirestore, setDoc, sum } from "firebase/firestore";
+import { collection, count, deleteDoc, doc, getAggregateFromServer, getDocs, getFirestore, query, setDoc, sum, where } from "firebase/firestore";
+import { APP_NAME } from "./config";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -22,6 +23,7 @@ export async function enviarAsistencia({ userid, asistencias }){
     const documento = doc(db, "asistencias", id);
 
     const docObj = {
+        appName: APP_NAME,
         id: id,
         userid,
         fecha: Date.now(),
@@ -34,18 +36,18 @@ export async function enviarAsistencia({ userid, asistencias }){
 }
 
 export async function obtenerListaAsistencias(){
-    const coleccion = collection(db, "asistencias");
-
-    const snapshot = await getDocs(coleccion);
+    const q = query(collection(db, "asistencias"), where("appName", "==", APP_NAME));
+    
+    const snapshot = await getDocs(q);
     const asistencias = snapshot.docs.map(doc => doc.data());
 
     return asistencias;
 }
 
 export async function obtenerAsistencia(){
-    const coleccion = collection(db, "asistencias");
+    const q = query(collection(db, "asistencias"), where("appName", "==", APP_NAME));
 
-    const snap = await getAggregateFromServer(coleccion, {
+    const snap = await getAggregateFromServer(q, {
         totalInvitados: sum('invitados')
     });
 
@@ -53,9 +55,9 @@ export async function obtenerAsistencia(){
 }
 
 export async function obtenerEnviosAsistencia(){
-    const coleccion = collection(db, "asistencias");
+    const q = query(collection(db, "asistencias"), where("appName", "==", APP_NAME));
 
-    const snap = await getAggregateFromServer(coleccion, {
+    const snap = await getAggregateFromServer(q, {
         envios: count('invitados')
     });
 
@@ -73,6 +75,7 @@ export async function enviarMensaje({ userid, nombre, mensaje }){
     const documento = doc(db, "mensajes", id);
 
     const docObj = {
+        appName: APP_NAME,
         id: id,
         userid,
         fecha: Date.now(),
@@ -86,9 +89,9 @@ export async function enviarMensaje({ userid, nombre, mensaje }){
 }
 
 export async function obtenerMensajes(){
-    const coleccion = collection(db, "mensajes");
+    const q = query(collection(db, "mensajes"), where("appName", "==", APP_NAME));
 
-    const snapshot = await getDocs(coleccion);
+    const snapshot = await getDocs(q);
     const mensajes = snapshot.docs.map(doc => doc.data());
 
     return mensajes;
@@ -101,9 +104,9 @@ export async function borrarMensaje(id){
 }
 
 export async function verificarContrasena(contrasena){
-    const coleccion = collection(db, "contrasenas");
+    const q = query(collection(db, "contrasenas"), where("appName", "==", APP_NAME));
 
-    const snapshot = await getDocs(coleccion);
+    const snapshot = await getDocs(q);
     const contrasenas = snapshot.docs.map(doc => doc.data());
 
     const documento = contrasenas.find(({ contrasena: contrasenaGuardada }) => {
